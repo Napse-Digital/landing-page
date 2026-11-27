@@ -175,9 +175,9 @@
               <p class="architecture-note">A estrutura visual é conceitual. Os elementos e as conexões reais variam de acordo com o escopo.</p>
             </div>
 
-            <div class="architecture-visual" data-architecture-visual role="img" aria-label="Diagrama conceitual: processo e contexto alimentam um agente que interage com ferramentas e sistemas, com avaliação das ações.">
+            <div class="architecture-visual" data-architecture-visual role="group" tabindex="0" aria-label="Diagrama interativo: arraste para girar a rede de agentes e conexões. Também é possível usar as setas do teclado.">
               <canvas class="architecture-canvas" id="architecture-canvas" aria-hidden="true"></canvas>
-              <svg class="architecture-fallback" viewBox="0 0 620 340" role="img" aria-label="Diagrama conceitual: processo e contexto alimentam um agente que interage com ferramentas e sistemas, com avaliação das ações.">
+              <svg class="architecture-fallback" viewBox="0 0 620 340" aria-hidden="true">
                 <defs>
                   <linearGradient id="diagramLine" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#6D9E8F"/><stop offset="1" stop-color="#348C6F"/></linearGradient>
                   <radialGradient id="diagramCore"><stop offset="0" stop-color="#6D9E8F"/><stop offset="1" stop-color="#1E443A"/></radialGradient>
@@ -186,10 +186,10 @@
                 <path class="diagram-path diagram-path-secondary" d="M105 236 C185 236 203 185 281 185 S410 236 515 236" />
                 <path class="diagram-path" d="M105 104 C185 104 203 155 281 155" />
                 <path class="diagram-path diagram-path-secondary" d="M105 236 C185 236 203 185 281 185" />
-                <rect class="diagram-node" x="45" y="72" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="45" y="204" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="465" y="72" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="465" y="204" width="112" height="64" rx="14"/>
+                <circle class="diagram-node" cx="105" cy="104" r="22"/>
+                <circle class="diagram-node" cx="105" cy="236" r="22"/>
+                <circle class="diagram-node" cx="515" cy="104" r="22"/>
+                <circle class="diagram-node" cx="515" cy="236" r="22"/>
                 <circle class="diagram-core-ring" cx="310" cy="170" r="71"/>
                 <circle class="diagram-core" cx="310" cy="170" r="48" fill="url(#diagramCore)"/>
                 <path class="diagram-core-mark" d="M310 139 L336 154 L336 185 L310 201 L284 185 L284 154 Z"/>
