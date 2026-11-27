@@ -9,7 +9,7 @@ A narrativa deriva do documento [Homepage Redesign Blueprint v1](https://github.
 - H1 alinhado ao posicionamento: engenharia de IA para transformar processos em capacidades operacionais.
 - Contexto operacional apresentado por sinais editoriais, sem simular cases.
 - Capacidades organizadas como disciplinas de engenharia em linhas editoriais, não quatro cards idênticos.
-- Arquitetura em um único painel claro com diagrama conceitual, rótulo de não-realização e cena 3D de fluxo.
+- Arquitetura em um único painel claro com orbe central, marca N e nós conceituais de processos, dados, sistemas e canais.
 - Processo representado como timeline conectada.
 - Responsabilidades do cliente e da Napse separadas sem duplicar o conteúdo.
 - FAQ responde dúvidas sobre escopo, integração, plataforma, operação e custos de diagnóstico.
@@ -18,14 +18,14 @@ A narrativa deriva do documento [Homepage Redesign Blueprint v1](https://github.
 ## Sistema visual
 - Deep Forest contínuo por toda a homepage, com SVGs responsivos próprios.
 - Waves originais restritas à atmosfera da hero, com máscara de transição.
-- Personagem usa o recorte transparente revisado.
-- Logo passa a usar o PNG RGBA original vindo do Foundations, sem recorte, reconstrução ou filtros.
+- Personagem usa `assets/hero-character.webp`, derivado com bordas alfa suavizadas; a composição o ancora à direita e à base da hero.
+- Logo usa o PNG RGBA oficial original, sem reconstrução; um filtro alfa reduz halos de baixa opacidade preservando o lockup.
 - Superfície branca de arquitetura com texto Ink/Body.
 - Tipografia Manrope/Inter, tokens oficiais e botões por superfície.
 - Sem cards repetitivos, badges decorativos ou provas sociais inventadas.
 
 ## 3D e motion
-Uma cena Three.js na arquitetura demonstra entradas, agente/orquestração e sistemas/ações. Um SVG semântico permanece como fallback. A cena pausa fora da viewport e em aba oculta, limita pixel ratio e desativa movimento em reduced-motion. Scroll reveals são progressivos e não escondem conteúdo sem suporte.
+O painel de arquitetura usa um orbe circular com N central, órbitas e quatro nós conceituais. A composição é HTML/SVG leve, sem WebGL ou dependência externa. Scroll reveals são progressivos e não escondem conteúdo sem suporte.
 
 ## Verificação
 A CI verifica estrutura, oito seções, links/asset paths, CTA, paleta, movimento reduzido, acessibilidade básica, cena 3D e fallback. A CI não substitui QA visual no navegador.

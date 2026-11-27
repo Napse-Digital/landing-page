@@ -18,11 +18,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="preload" as="image" href="./assets/brand-lockup-original.png">
-  <link rel="preload" as="image" href="./assets/hero-character-cutout.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/hero-character.webp" fetchpriority="high">
   <link rel="stylesheet" href="./styles/homepage-v5.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
+  <svg class="svg-definitions" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="napse-logo-alpha" color-interpolation-filters="sRGB" x="-8%" y="-8%" width="116%" height="116%">
+        <feComponentTransfer>
+          <feFuncA type="gamma" amplitude="1" exponent="2.4" offset="0"/>
+        </feComponentTransfer>
+      </filter>
+    </defs>
+  </svg>
 
   <div class="page-shell">
     <div class="ambient-field" aria-hidden="true"></div>
@@ -89,7 +98,7 @@
 
           <div class="hero-visual" aria-label="Personagem visual da Napse">
             <div class="hero-halo" aria-hidden="true"></div>
-            <img class="hero-character" src="./assets/hero-character-cutout.webp" alt="Personagem humanoide translúcido com cérebro luminoso esmeralda e jaqueta técnica da Napse" width="1024" height="1536" fetchpriority="high" decoding="async">
+            <img class="hero-character" src="./assets/hero-character.webp" alt="Personagem humanoide translúcido com cérebro luminoso esmeralda e jaqueta técnica da Napse" width="1024" height="1536" fetchpriority="high" decoding="async">
           </div>
         </div>
 
@@ -104,7 +113,7 @@
             <div class="section-index"><span>01</span><i></i><span>O ponto de partida</span></div>
             <div class="heading-copy">
               <p class="eyebrow">CONTEXTO OPERACIONAL</p>
-              <h2 id="context-title">Uma solicitação pode atravessar <span>várias etapas antes de virar trabalho concluído.</span></h2>
+              <h2 id="context-title">O trabalho da sua empresa não acontece em uma única ferramenta.</h2>
               <p class="section-lead">Imagine um pedido que chega por um canal, exige consulta de informações, validação de regras e atualização de outro sistema. A engenharia está em conectar essas etapas sem perder contexto, controle ou tratamento de exceções.</p>
             </div>
           </div>
@@ -127,7 +136,6 @@
               <div><h3>Ação e exceção</h3><p>Uma ferramenta é atualizada; casos fora das regras seguem para avaliação humana.</p></div>
             </article>
           </div>
-          <p class="illustrative-note">Fluxo ilustrativo para explicar a lógica de uma solução. Não representa cliente, integração ativa ou projeto já implantado.</p>
         </div>
       </section>
 
@@ -145,22 +153,22 @@
             <article class="capability-row" data-reveal>
               <span class="capability-number">01</span>
               <h3>Agentes inteligentes</h3>
-              <p>Podem interpretar solicitações, recuperar informações, classificar demandas e preparar ou executar ações delimitadas, respeitando regras, permissões e pontos de aprovação definidos no projeto.</p>
+              <p>Agentes delimitados que consultam contexto, seguem regras e acionam ferramentas conforme as permissões definidas para o projeto.</p>
             </article>
             <article class="capability-row" data-reveal>
               <span class="capability-number">02</span>
               <h3>Automação de processos</h3>
-              <p>Podem receber eventos, validar condições, encaminhar tarefas, atualizar etapas e acionar pessoas quando o fluxo encontra uma exceção.</p>
+              <p>Fluxos que coordenam etapas, condições e tarefas recorrentes entre pessoas e sistemas.</p>
             </article>
             <article class="capability-row" data-reveal>
               <span class="capability-number">03</span>
               <h3>Integrações e workflows</h3>
-              <p>Conectam as etapas do trabalho a aplicações, APIs, bases de dados e canais existentes, conforme acessos, documentação e viabilidade técnica.</p>
+              <p>Conexões entre aplicações, APIs, dados e canais, conforme acessos, documentação e viabilidade técnica.</p>
             </article>
             <article class="capability-row" data-reveal>
               <span class="capability-number">04</span>
               <h3>Software sob medida</h3>
-              <p>Incluem painéis, portais, serviços internos e aplicações específicas quando o processo exige uma interface ou lógica que as ferramentas existentes não oferecem.</p>
+              <p>Interfaces, serviços e sistemas específicos quando as ferramentas existentes não atendem ao processo.</p>
             </article>
           </div>
         </div>
@@ -173,38 +181,23 @@
               <div class="section-index section-index-dark"><span>03</span><i></i><span>Arquitetura em contexto</span></div>
               <p class="eyebrow eyebrow-dark">INTEGRAÇÃO E ORQUESTRAÇÃO</p>
               <h2 id="architecture-title">A inteligência precisa funcionar <span>dentro do ambiente da empresa.</span></h2>
-              <p class="architecture-lead">A arquitetura define como a solicitação entra, de onde vem o contexto, quais regras limitam as decisões, que ferramentas podem ser acionadas e como resultados e exceções são avaliados.</p>
-              <p class="architecture-note">Exemplo conceitual de fluxo. Não indica integração ativa, fornecedor específico ou implantação realizada.</p>
+              <p class="architecture-lead">A arquitetura conecta processo, contexto, agentes e sistemas existentes. Integrações, permissões e regras são definidas conforme os requisitos e a viabilidade de cada projeto.</p>
+              <p class="architecture-note">A estrutura visual é conceitual. Os elementos e as conexões reais variam de acordo com o escopo.</p>
             </div>
 
-            <div class="architecture-visual" data-architecture-visual>
-              <canvas class="architecture-canvas" id="architecture-canvas" aria-hidden="true"></canvas>
-              <svg class="architecture-fallback" viewBox="0 0 620 340" role="img" aria-label="Diagrama conceitual: processo e contexto alimentam um agente que interage com ferramentas e sistemas, com avaliação das ações.">
-                <defs>
-                  <linearGradient id="diagramLine" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#6D9E8F"/><stop offset="1" stop-color="#348C6F"/></linearGradient>
-                  <radialGradient id="diagramCore"><stop offset="0" stop-color="#6D9E8F"/><stop offset="1" stop-color="#1E443A"/></radialGradient>
-                </defs>
-                <path class="diagram-path" d="M105 104 C185 104 203 155 281 155 S410 104 515 104" />
-                <path class="diagram-path diagram-path-secondary" d="M105 236 C185 236 203 185 281 185 S410 236 515 236" />
-                <path class="diagram-path" d="M105 104 C185 104 203 155 281 155" />
-                <path class="diagram-path diagram-path-secondary" d="M105 236 C185 236 203 185 281 185" />
-                <rect class="diagram-node" x="45" y="72" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="45" y="204" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="465" y="72" width="112" height="64" rx="14"/>
-                <rect class="diagram-node" x="465" y="204" width="112" height="64" rx="14"/>
-                <circle class="diagram-core-ring" cx="310" cy="170" r="71"/>
-                <circle class="diagram-core" cx="310" cy="170" r="48" fill="url(#diagramCore)"/>
-                <path class="diagram-core-mark" d="M310 139 L336 154 L336 185 L310 201 L284 185 L284 154 Z"/>
-                <circle class="diagram-point" cx="105" cy="104" r="5"/><circle class="diagram-point" cx="105" cy="236" r="5"/>
-                <circle class="diagram-point" cx="515" cy="104" r="5"/><circle class="diagram-point" cx="515" cy="236" r="5"/>
+            <div class="architecture-visual" role="img" aria-label="Diagrama conceitual: processo e contexto alimentam um agente que interage com ferramentas e sistemas, com avaliação das ações.">
+              <div class="architecture-orbit orbit-outer" aria-hidden="true"></div>
+              <div class="architecture-orbit orbit-inner" aria-hidden="true"></div>
+              <div class="architecture-node node-top" aria-hidden="true"><span class="node-symbol">↔</span><span>PROCESSOS</span></div>
+              <div class="architecture-node node-left" aria-hidden="true"><span class="node-symbol">⌘</span><span>DADOS</span></div>
+              <div class="architecture-node node-right" aria-hidden="true"><span class="node-symbol">⌁</span><span>SISTEMAS</span></div>
+              <div class="architecture-node node-bottom" aria-hidden="true"><span class="node-symbol">◌</span><span>CANAIS</span></div>
+              <div class="architecture-core" aria-hidden="true"><span class="core-mark">N</span><strong>AGENTES</strong><small>CONTEXTO + REGRAS</small></div>
+              <svg class="architecture-lines" viewBox="0 0 620 360" aria-hidden="true">
+                <path d="M310 54V112 M112 180H236 M384 180H508 M310 248V306"/>
+                <path d="M310 112V248" class="line-core"/>
               </svg>
-
-              <div class="diagram-labels" aria-hidden="true">
-                <span>PROCESSO E CONTEXTO</span>
-                <span>AGENTE / ORQUESTRAÇÃO</span>
-                <span>FERRAMENTAS E SISTEMAS</span>
-              </div>
-              <p class="diagram-caption">Representação conceitual de uma arquitetura possível</p>
+              <span class="diagram-label" aria-hidden="true">ARQUITETURA CONCEITUAL</span>
             </div>
           </div>
         </div>

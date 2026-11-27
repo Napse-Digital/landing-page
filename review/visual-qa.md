@@ -1,28 +1,28 @@
-# Visual QA — Homepage Redesign v2
+# Visual QA — Revisão editorial e visual
 
-## Alterações narrativas aplicadas
-- Hero explicita estratégia, engenharia e implantação de IA.
-- Contexto operacional substituído por um fluxo ilustrativo: entrada, contexto, regras/decisão, ação e exceção.
-- Capacidades descritas por tarefas que podem executar e seus limites.
-- Jornada reescrita como Discovery, estratégia/arquitetura, Build/integração, Go-live/avaliação e operação/evolução.
-- Etapas descrevem saídas possíveis, sempre condicionadas ao escopo.
-- Metadados SEO/OG alinhados ao posicionamento.
-- Blueprint de referência: `Napse-Digital/napse-foundations/references/homepage-redesign-blueprint-v2-runflow-alignment.md`.
+## Escopo implementado nesta revisão
+- O título da seção de contexto foi restaurado para “O trabalho da sua empresa não acontece em uma única ferramenta.”
+- Removida a ressalva redundante abaixo do fluxo de contexto.
+- Restauradas as quatro descrições anteriores das capacidades.
+- Restaurados o parágrafo e a nota conceitual anteriores da seção de arquitetura.
+- O diagrama foi restaurado como orbe central com N, órbitas e nós para processos, dados, sistemas e canais.
+- Removida a cena Three.js; a arquitetura agora usa HTML/SVG sem dependência WebGL.
+- O hero usa o derivado com alfa suavizado `hero-character.webp`, alinhado à direita e à base.
+- O logo oficial PNG permanece sem reconstrução; o tratamento alfa reduz o halo semitransparente.
+- O fundo das ondas passa a desaparecer gradualmente sobre o campo global, sem um halo independente atrás do personagem.
 
 ## Automated checks
-- Existing structural validator covers eight narrative sections, one H1, anchors, assets, official palette, responsive background variants, reduced motion, focus, CTA destination, one 3D canvas and SVG fallback.
-- Existing JavaScript syntax check remains configured in GitHub Actions.
-- The validator has not yet been observed running against the latest v2 commit. Do not claim CI passed for v2 until a run is verified.
+- O validador verifica oito seções narrativas, um H1, âncoras, assets, paleta oficial, variantes de background, reduced motion, foco, CTA e presença do orbe.
+- O teste JavaScript verifica a sintaxe de `script.js`.
+- O teste estrutural precisa ser confirmado no novo commit via GitHub Actions antes de ser marcado como aprovado.
 
-## Browser review status: BLOCKED
+## Browser review
+A revisão de navegador ainda é necessária no Preview atualizado:
+- 1440×900, 1024×768, 768×1024 e 390×844.
+- Recorte, escala, encaixe à direita e distância entre personagem e texto.
+- Transparência da logo no header e footer, sem halo opaco perceptível.
+- Continuidade do background nas transições da hero para a seção de contexto.
+- Leitura do orbe/N e posicionamento dos quatro nós, sobretudo em mobile.
+- Menu, FAQ, foco de teclado, reduced motion, console e rede.
 
-The Vercel URL could not be fetched from the current browser environment, and this review branch has not been redeployed. The following must be checked once a browser preview is available:
-- Full-page render at 1440×900, 1024×768, 768×1024 and 390×844.
-- Hero composition, official logo proportions and character alpha edges.
-- Background continuity at each section boundary.
-- Typography hierarchy, actual contrast and line breaks.
-- Operational flow readability and architecture diagram/Three.js framing; SVG fallback if WebGL is unavailable.
-- Navigation, FAQ, keyboard focus and reduced-motion behavior.
-- Console/network errors, image/font loading and layout shifts.
-
-A passing structural check is not visual approval or production deployment. Main branch remains untouched; no production deploy was requested or performed.
+Build concluído na Vercel não equivale a aprovação visual. A branch `main` permanece inalterada; não foi solicitada publicação em produção.

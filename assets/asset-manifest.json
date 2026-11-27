@@ -62,7 +62,7 @@
     {
       "path": "assets/hero-character-cutout.webp",
       "dimensions": "1024x1536",
-      "role": "character cut-out with transparent background; generated from hero-character.webp"
+      "role": "alternate character derivative; retained but not used by the current hero"
     },
     {
       "path": "assets/brand-lockup-original.png",
