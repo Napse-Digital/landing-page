@@ -1,13 +1,18 @@
-# Visual QA — Homepage Redesign v1
+# Visual QA — Homepage Redesign v2
+
+## Alterações narrativas aplicadas
+- Hero explicita estratégia, engenharia e implantação de IA.
+- Contexto operacional substituído por um fluxo ilustrativo: entrada, contexto, regras/decisão, ação e exceção.
+- Capacidades descritas por tarefas que podem executar e seus limites.
+- Jornada reescrita como Discovery, estratégia/arquitetura, Build/integração, Go-live/avaliação e operação/evolução.
+- Etapas descrevem saídas possíveis, sempre condicionadas ao escopo.
+- Metadados SEO/OG alinhados ao posicionamento.
+- Blueprint de referência: `Napse-Digital/napse-foundations/references/homepage-redesign-blueprint-v2-runflow-alignment.md`.
 
 ## Automated checks
-- Eight narrative sections, one H1 and valid internal anchors.
-- Original logo PNG and transparent character asset paths resolve.
-- Desktop/tablet/mobile global background assets exist and are linked.
-- WhatsApp CTAs point to the confirmed destination.
-- One purposeful Three.js flow scene with static SVG fallback.
-- Official palette only; reduced motion, visible focus and skip navigation.
-- JavaScript syntax checked in GitHub Actions.
+- Existing structural validator covers eight narrative sections, one H1, anchors, assets, official palette, responsive background variants, reduced motion, focus, CTA destination, one 3D canvas and SVG fallback.
+- Existing JavaScript syntax check remains configured in GitHub Actions.
+- The validator has not yet been observed running against the latest v2 commit. Do not claim CI passed for v2 until a run is verified.
 
 ## Browser review status: BLOCKED
 
@@ -16,8 +21,8 @@ The Vercel URL could not be fetched from the current browser environment, and th
 - Hero composition, official logo proportions and character alpha edges.
 - Background continuity at each section boundary.
 - Typography hierarchy, actual contrast and line breaks.
-- Architecture diagram and Three.js framing; SVG fallback if WebGL is unavailable.
+- Operational flow readability and architecture diagram/Three.js framing; SVG fallback if WebGL is unavailable.
 - Navigation, FAQ, keyboard focus and reduced-motion behavior.
 - Console/network errors, image/font loading and layout shifts.
 
-Structural CI passed on commit `810e4dff4cc2a238323966ff8b48eb5cccd94ddd` before this review-only maintenance patch. A passing CI is not visual approval or production deployment.
+A passing structural check is not visual approval or production deployment. Main branch remains untouched; no production deploy was requested or performed.
