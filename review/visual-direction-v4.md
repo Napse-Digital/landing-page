@@ -8,7 +8,7 @@ Não alternar seções inteiras em branco. O branco deve aparecer apenas em card
 ## Hero e assets
 O personagem é um PNG/WebP raster fornecido, não um objeto 3D. Seu fundo original precisa ser removido para não criar uma placa verde/halo rectangular sobre o campo global. Não usar mix-blend-screen como substituto de um alpha correto.
 
-O logo deve ser usado a partir do arquivo transparente fornecido pelo responsável. Não aplicar rembg, threshold agressivo, filtros CSS ou sombras que criem halos. O upload mais recente não ficou disponível como arquivo montável no ambiente do repositório; enquanto isso, nenhum novo recorte foi criado para o logo. O asset oficial anterior continua apenas como placeholder até que a imagem transparente esteja presente como arquivo.
+O logo deve ser usado a partir do arquivo transparente fornecido pelo responsável. Não aplicar rembg, threshold agressivo, filtros CSS ou sombras que criem halos. O upload mais recente aparece visualmente na conversa, mas não foi disponibilizado como arquivo copiável no ambiente do repositório. Por isso, ele ainda não foi inserido; nenhum novo recorte foi criado nem aplicado ao logo. O HTML mantém temporariamente o asset anterior `brand-lockup.webp` até que o PNG transparente esteja acessível como arquivo.
 
 ## Fundo
 - Restaurar os três SVGs contínuos desktop/tablet/mobile que já existiam.
