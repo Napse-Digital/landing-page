@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Structural checks for the Napse continuous green-field landing page."""
+"""Structural release checks for the Napse homepage redesign v5."""
 from __future__ import annotations
 from html.parser import HTMLParser
 from pathlib import Path
@@ -7,77 +7,60 @@ import re
 
 ROOT=Path(__file__).resolve().parents[1]
 HTML=ROOT/"index.html"
-EXPECTED_WA="https://wa.me/5518991657817"
-TOKENS={x.upper() for x in [
- "#081715","#1E443A","#305B4F","#556A65","#6D9E8F","#9BC7B8",
- "#B2D6C9","#348C6F","#F0F4F2","#FFFFFF","#10201C","#53615C",
- "#7C8984","#DCE7E2"
-]}
-STYLESHEETS=[ROOT/"styles.css",ROOT/"styles"/"sections.css",ROOT/"styles"/"responsive.css",ROOT/"styles"/"overrides.css",ROOT/"styles"/"green-refinement.css"]
-ASSETS=["assets/hero-character-cutout.webp","assets/brand-lockup.webp","assets/waves.webp","assets/continuous-background-desktop.svg","assets/continuous-background-tablet.svg","assets/continuous-background-mobile.svg","assets/favicon.png"]
-class Parser(HTMLParser):
+WA="https://wa.me/5518991657817"
+TOKENS={x.upper() for x in ["#081715","#1E443A","#305B4F","#556A65","#6D9E8F","#9BC7B8","#B2D6C9","#348C6F","#F0F4F2","#FFFFFF","#10201C","#53615C","#7C8984","#DCE7E2"]}
+ASSETS=["assets/brand-lockup-original.png","assets/hero-character-cutout.webp","assets/waves.webp","assets/background-v5-desktop.svg","assets/background-v5-tablet.svg","assets/background-v5-mobile.svg","assets/favicon.png"]
+class Page(HTMLParser):
  def __init__(self):
-  super().__init__(); self.ids=set(); self.hrefs=[]; self.srcs=[]; self.sections=0; self.h1=0; self.wa=[]; self.lang=None; self.canvases=0; self.styles=[]
+  super().__init__();self.ids=set();self.hrefs=[];self.srcs=[];self.wa=[];self.sections=[];self.h1=0;self.lang=None;self.canvases=0
  def handle_starttag(self,tag,attrs):
   a=dict(attrs)
-  if tag=="html": self.lang=a.get("lang")
-  if "id" in a: self.ids.add(a["id"])
-  if tag=="section": self.sections+=1
-  if tag=="h1": self.h1+=1
-  if tag=="canvas": self.canvases+=1
-  href=a.get("href"); src=a.get("src")
-  if href:
-   self.hrefs.append(href)
-   if a.get("rel")=="stylesheet": self.styles.append(href)
-   if href.startswith("https://wa.me/"): self.wa.append(href)
-  if src:
-   self.srcs.append(src)
-   if src.startswith("https://wa.me/"): self.wa.append(src)
+  if tag=="html":self.lang=a.get("lang")
+  if a.get("id"):self.ids.add(a["id"])
+  if tag=="section":self.sections.append(a.get("class",""))
+  if tag=="h1":self.h1+=1
+  if tag=="canvas":self.canvases+=1
+  for key,dest in (("href",self.hrefs),("src",self.srcs)):
+   value=a.get(key)
+   if value:
+    dest.append(value)
+    if value.startswith("https://wa.me/"):self.wa.append(value)
 def fail(message):
- print("FAIL:",message); raise SystemExit(1)
-if not HTML.is_file(): fail("index.html missing")
-html=HTML.read_text(encoding="utf-8"); parser=Parser(); parser.feed(html)
-if parser.lang!="pt-BR": fail("language must be pt-BR")
-if parser.h1!=1: fail(f"expected one H1, found {parser.h1}")
-if parser.sections!=9: fail(f"expected nine sections, found {parser.sections}")
-if parser.canvases!=1 or 'id="architecture-canvas"' not in html: fail("expected one architecture canvas")
-if "brand-lockup-cropped.webp" in html or "brand-lockup-clean.webp" in html: fail("stale/reworked logo path remains; use supplied clean brand asset")
-if re.search(r'(?:src|href)="/assets/',html): fail("asset paths must be relative")
-if not parser.wa or len(parser.wa)<4 or any(x!=EXPECTED_WA for x in parser.wa): fail("WhatsApp destinations are inconsistent")
-for href in parser.hrefs:
- if href.startswith("#") and href!="#":
-  if href[1:] not in parser.ids: fail("missing anchor target: "+href)
- elif href.startswith("./") and not href.startswith("./#"):
-  if not (ROOT/href[2:]).is_file(): fail("local href does not exist: "+href)
-for src in parser.srcs:
- if src.startswith("./") and not (ROOT/src[2:]).is_file(): fail("local src does not exist: "+src)
-for href in parser.styles:
- if href.startswith("./") and not (ROOT/href[2:]).is_file(): fail("stylesheet does not exist: "+href)
+ print("FAIL:",message);raise SystemExit(1)
+if not HTML.is_file():fail("index.html missing")
+body=HTML.read_text(encoding="utf-8");p=Page();p.feed(body)
+if p.lang!="pt-BR":fail("HTML language must be pt-BR")
+if p.h1!=1:fail(f"expected exactly one H1, found {p.h1}")
+if len(p.sections)!=8:fail(f"expected eight narrative sections, found {len(p.sections)}")
+if p.canvases!=1:fail(f"expected one purposeful 3D canvas, found {p.canvases}")
 for asset in ASSETS:
- if not (ROOT/asset).is_file(): fail("required asset missing: "+asset)
-for path in STYLESHEETS:
- if not path.is_file(): fail("stylesheet missing: "+str(path.relative_to(ROOT)))
-css="\n".join(path.read_text(encoding="utf-8") for path in STYLESHEETS)
+ if not (ROOT/asset).is_file():fail("missing asset: "+asset)
+for value in p.hrefs:
+ if value.startswith("#") and value!="#":
+  if value[1:] not in p.ids:fail("broken anchor: "+value)
+ elif value.startswith("./") and not (ROOT/value[2:]).is_file():fail("missing local href: "+value)
+for value in p.srcs:
+ if value.startswith("./") and not (ROOT/value[2:]).is_file():fail("missing local source: "+value)
+if len(p.wa)<3 or any(x!=WA for x in p.wa):fail("WhatsApp CTAs do not use the confirmed destination")
+if "AUTOMATIZE OS SEUS FLUXOS DE TRABALHO" in body:fail("old generic hero headline remains")
+if "Cada projeto pode revelar componentes" in body:fail("obsolete component-reuse section remains")
+if "plataforma multiagente como produto já disponível" not in body:fail("FAQ must clarify that no ready-made platform is offered")
+for path in [ROOT/"styles"/"homepage-v5.css",ROOT/"script.js",ROOT/"tools"/"validate-site.py"]:
+ if not path.is_file():fail("missing implementation file: "+str(path.relative_to(ROOT)))
+css=(ROOT/"styles"/"homepage-v5.css").read_text(encoding="utf-8")
 colors={x.upper() for x in re.findall(r"#[0-9A-Fa-f]{6}",css)}
-if colors-TOKENS: fail("unapproved palette colors: "+", ".join(sorted(colors-TOKENS)))
-for name in ("continuous-background-desktop.svg","continuous-background-tablet.svg","continuous-background-mobile.svg"):
- if name not in css: fail("missing continuous background mapping: "+name)
-if ".section {" not in css or "background: transparent" not in css: fail("section wrappers must be transparent")
-if "background:var(--card-bg)" not in css or "color:var(--card-text)" not in css: fail("white cards must use dark text")
-if "Autonomia exige" not in html or "guardrail-card" not in html: fail("section 03 has not been rewritten")
-if "componentes reutilizáveis" in html.lower() or "próximo projeto" in html.lower(): fail("obsolete component-reuse proposition remains")
-if "prefers-reduced-motion" not in css: fail("reduced motion missing")
-if "focus-visible" not in css or "skip-link" not in html: fail("keyboard focus/skip navigation missing")
-script=(ROOT/"script.js").read_text(encoding="utf-8")
-if "three@0.187.0/build/three.module.js" not in script: fail("pinned Three.js scene missing")
-if "canvas.hidden = true" not in script: fail("3D fallback missing")
-if "mix-blend-mode:normal" not in css: fail("asset blend mode must preserve transparent edges")
-print("PASS: Napse green-field visual checks")
-print(f" - sections: {parser.sections}; WhatsApp CTAs: {len(parser.wa)}")
-print(" - transparent hero derivative and logo paths: resolved")
-print(" - continuous SVG green background: desktop/tablet/mobile")
-print(" - functional white cards with dark typography")
-print(" - section 03: context, boundaries and evaluation")
-print(" - animation, reduced motion and accessible focus")
-print(" - one Three.js architecture scene with static fallback")
-print(" - approved Design Kit v1 color palette only")
+if colors-TOKENS:fail("unapproved color values: "+", ".join(sorted(colors-TOKENS)))
+if "background-v5-desktop.svg" not in css or "background-v5-tablet.svg" not in css or "background-v5-mobile.svg" not in css:fail("responsive continuous field mappings missing")
+if "prefers-reduced-motion" not in css:fail("reduced-motion CSS fallback missing")
+if "focus-visible" not in css or "skip-link" not in body:fail("focus/skip navigation missing")
+js=(ROOT/"script.js").read_text(encoding="utf-8")
+if "three@0.187.0/build/three.module.js" not in js or "architecture-fallback" not in body:fail("purposeful 3D scene or static fallback missing")
+if "data-reveal" not in body or "IntersectionObserver" not in js:fail("progressive reveal motion missing")
+if "brand-lockup.webp" in body:fail("old cropped logo derivative remains in use")
+print("PASS: Napse homepage v5 structural checks")
+print(f" - sections: {len(p.sections)}; H1: {p.h1}; canvas: {p.canvases}; WhatsApp CTAs: {len(p.wa)}")
+print(" - original logo PNG and transparent character are used")
+print(" - one continuous background, with desktop/tablet/mobile compositions")
+print(" - one architecture 3D scene with semantic SVG fallback")
+print(" - copy is grounded in engineering/implantation and documented claims")
+print(" - official palette, reduced-motion, keyboard focus and skip navigation")

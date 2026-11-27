@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="8500" viewBox="0 0 390 8500" preserveAspectRatio="none" fill="none">
+<title>Napse — campo esmeralda contínuo mobile</title>
+<defs>
+ <linearGradient id="base" x1="0" y1="0" x2="0" y2="8500" gradientUnits="userSpaceOnUse"><stop stop-color="#081715"/><stop offset=".4" stop-color="#081715"/><stop offset=".7" stop-color="#102A24"/><stop offset=".88" stop-color="#081715"/><stop offset="1" stop-color="#081715"/></linearGradient>
+ <radialGradient id="glow"><stop stop-color="#6D9E8F" stop-opacity=".22"/><stop offset=".5" stop-color="#305B4F" stop-opacity=".12"/><stop offset="1" stop-color="#081715" stop-opacity="0"/></radialGradient>
+ <filter id="blur"><feGaussianBlur stdDeviation="24"/></filter>
+</defs>
+<rect width="390" height="8500" fill="#081715"/><rect width="390" height="8500" fill="url(#base)"/>
+<ellipse cx="290" cy="980" rx="270" ry="450" fill="url(#glow)" opacity=".68"/>
+<ellipse cx="80" cy="3000" rx="270" ry="450" fill="url(#glow)" opacity=".38"/>
+<ellipse cx="310" cy="5050" rx="270" ry="500" fill="url(#glow)" opacity=".5"/>
+<ellipse cx="70" cy="7300" rx="270" ry="500" fill="url(#glow)" opacity=".32"/>
+<path d="M-120 1440 C20 1250 90 1310 150 1530 C220 1800 310 1820 470 1570 C550 1440 590 1390 680 1400" stroke="#6D9E8F" stroke-opacity=".075" stroke-width="58" filter="url(#blur)"/>
+<path d="M-120 1440 C20 1250 90 1310 150 1530 C220 1800 310 1820 470 1570 C550 1440 590 1390 680 1400" stroke="#9BC7B8" stroke-opacity=".3" stroke-width="1.2"/>
+<path d="M-120 3850 C15 3650 90 3750 155 3990 C220 4230 315 4260 485 4010 C570 3880 615 3830 700 3840" stroke="#6D9E8F" stroke-opacity=".05" stroke-width="58" filter="url(#blur)"/>
+<path d="M-120 3850 C15 3650 90 3750 155 3990 C220 4230 315 4260 485 4010 C570 3880 615 3830 700 3840" stroke="#9BC7B8" stroke-opacity=".2" stroke-width="1.2"/>
+<path d="M-120 6500 C15 6300 90 6420 160 6680 C230 6940 315 6950 490 6700 C570 6580 615 6510 700 6530" stroke="#6D9E8F" stroke-opacity=".06" stroke-width="58" filter="url(#blur)"/>
+<path d="M-120 6500 C15 6300 90 6420 160 6680 C230 6940 315 6950 490 6700 C570 6580 615 6510 700 6530" stroke="#9BC7B8" stroke-opacity=".24" stroke-width="1.2"/>
+</svg>

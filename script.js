@@ -1,71 +1,62 @@
 (() => {
-  const toggle = document.querySelector('.menu-toggle');
-  const menu = document.querySelector('#mobile-menu');
-  const year = document.querySelector('#current-year');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-
+  const year = document.querySelector('#current-year');
   if (year) year.textContent = String(new Date().getFullYear());
 
+  // Accessible mobile navigation: predictable focus and dismissal.
+  const toggle = document.querySelector('.menu-toggle');
+  const menu = document.querySelector('#mobile-menu');
   if (toggle && menu) {
-    const setMenuOpen = (open, { restoreFocus = false } = {}) => {
+    const firstLink = menu.querySelector('a');
+    const setMenu = (open, restoreFocus = false) => {
       toggle.setAttribute('aria-expanded', String(open));
       toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
       menu.hidden = !open;
       document.body.classList.toggle('menu-open', open);
-      if (restoreFocus) toggle.focus();
-      else if (open) menu.querySelector('a')?.focus();
+      if (open) firstLink?.focus();
+      if (!open && restoreFocus) toggle.focus();
     };
-
     toggle.addEventListener('click', () => {
-      setMenuOpen(toggle.getAttribute('aria-expanded') !== 'true');
+      setMenu(toggle.getAttribute('aria-expanded') !== 'true');
     });
     menu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => setMenuOpen(false));
+      link.addEventListener('click', () => setMenu(false));
     });
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        setMenuOpen(false, { restoreFocus: true });
+        setMenu(false, true);
       }
     });
     document.addEventListener('pointerdown', (event) => {
       if (toggle.getAttribute('aria-expanded') !== 'true') return;
-      if (!menu.contains(event.target) && !toggle.contains(event.target)) setMenuOpen(false);
+      if (!menu.contains(event.target) && !toggle.contains(event.target)) setMenu(false);
     });
-    const closeOnDesktop = window.matchMedia('(min-width: 901px)');
-    closeOnDesktop.addEventListener?.('change', (event) => {
-      if (event.matches) setMenuOpen(false);
+    window.matchMedia('(min-width: 901px)').addEventListener?.('change', (event) => {
+      if (event.matches) setMenu(false);
     });
   }
 
-  // Progressive reveal: content stays visible when JS/IntersectionObserver is unavailable.
+  // Reveal content progressively. Without JS or IntersectionObserver, everything stays visible.
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
-    const revealSelectors = [
-      '.hero-copy', '.hero-visual', '.context-layout', '.signal',
-      '.section-heading', '.capability-item', '.section-heading-process',
-      '.process-step', '.engineering-copy', '.architecture-visual',
-      '.guardrails-heading', '.guardrail-card', '.responsibility-heading',
-      '.responsibility-column', '.faq-heading', '.faq-item', '.final-cta-inner'
-    ];
-    const revealTargets = [...new Set(revealSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]))];
-    const revealObserver = new IntersectionObserver((entries, observer) => {
+    const targets = [...document.querySelectorAll('[data-reveal]')];
+    const observer = new IntersectionObserver((entries, instance) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
+        instance.unobserve(entry.target);
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
-
-    revealTargets.forEach((element, index) => {
+    }, { threshold: 0.12, rootMargin: '0px 0px -4% 0px' });
+    targets.forEach((element, index) => {
       element.classList.add('reveal');
-      element.style.setProperty('--reveal-delay', String((index % 4) * 65) + 'ms');
-      revealObserver.observe(element);
+      element.style.setProperty('--reveal-delay', String((index % 3) * 45) + 'ms');
+      observer.observe(element);
     });
   }
 
-  // One purposeful Three.js scene in the architecture diagram; CSS remains the fallback.
+  // One conceptual 3D flow illustration. The SVG remains the fallback.
   const canvas = document.querySelector('#architecture-canvas');
-  const visual = canvas?.closest('.architecture-visual');
-  if (!canvas || !visual) return;
+  const visual = document.querySelector('[data-architecture-visual]');
+  if (!canvas || !visual || !('WebGLRenderingContext' in window)) return;
 
   const threeUrl = 'https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js';
   import(threeUrl).then((THREE) => {
@@ -82,156 +73,223 @@
       return;
     }
 
+    renderer.setClearColor(0xFFFFFF, 0);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.1 : 1.35));
+
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
-    camera.position.set(0, 0, 5.25);
+    const camera = new THREE.PerspectiveCamera(33, 1, 0.1, 30);
+    camera.position.set(0, 1.35, 7.3);
+    camera.lookAt(0, 0, 0);
 
-    scene.add(new THREE.HemisphereLight(0xFFFFFF, 0x1E443A, 2.0));
-    const keyLight = new THREE.PointLight(0xB2D6C9, 30, 12);
-    keyLight.position.set(-2.2, 2.4, 3.2);
-    scene.add(keyLight);
-    const rimLight = new THREE.PointLight(0x348C6F, 34, 10);
-    rimLight.position.set(2.3, -1.5, -1.5);
-    scene.add(rimLight);
+    scene.add(new THREE.HemisphereLight(0xFFFFFF, 0x305B4F, 2.0));
+    const key = new THREE.PointLight(0xB2D6C9, 26, 12);
+    key.position.set(-2.2, 3.4, 4);
+    scene.add(key);
+    const fill = new THREE.PointLight(0x348C6F, 18, 10);
+    fill.position.set(2.8, -2, 1.4);
+    scene.add(fill);
 
-    const objectGroup = new THREE.Group();
-    scene.add(objectGroup);
+    const flow = new THREE.Group();
+    scene.add(flow);
 
-    const crystalGeometry = new THREE.IcosahedronGeometry(0.96, 2);
-    const crystal = new THREE.Mesh(
-      crystalGeometry,
+    const coreGeometry = new THREE.IcosahedronGeometry(0.62, 2);
+    const core = new THREE.Mesh(
+      coreGeometry,
       new THREE.MeshPhysicalMaterial({
-        color: 0x9BC7B8,
+        color: 0x305B4F,
         metalness: 0.42,
         roughness: 0.2,
         clearcoat: 1,
-        clearcoatRoughness: 0.08,
-        emissive: 0x1E443A,
-        emissiveIntensity: 0.3,
+        clearcoatRoughness: 0.1,
         transparent: true,
-        opacity: 0.78
+        opacity: 0.94
       })
     );
-    objectGroup.add(crystal);
+    flow.add(core);
 
-    const edgeLines = new THREE.LineSegments(
-      new THREE.EdgesGeometry(crystalGeometry),
-      new THREE.LineBasicMaterial({ color: 0xB2D6C9, transparent: true, opacity: 0.52 })
+    const coreEdges = new THREE.LineSegments(
+      new THREE.EdgesGeometry(coreGeometry),
+      new THREE.LineBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.62 })
     );
-    objectGroup.add(edgeLines);
+    flow.add(coreEdges);
 
-    const ringMaterial = new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.54 });
-    const ringOne = new THREE.Mesh(new THREE.TorusGeometry(1.42, 0.012, 8, 112), ringMaterial);
-    ringOne.rotation.set(0.9, 0.2, 0.2);
-    objectGroup.add(ringOne);
-    const ringTwo = new THREE.Mesh(
-      new THREE.TorusGeometry(1.22, 0.008, 8, 112),
-      new THREE.MeshBasicMaterial({ color: 0xB2D6C9, transparent: true, opacity: 0.42 })
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.94, 0.012, 8, 100),
+      new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.55 })
     );
-    ringTwo.rotation.set(0.12, 1.12, 0.72);
-    objectGroup.add(ringTwo);
+    ring.rotation.set(0.88, 0.2, 0.25);
+    flow.add(ring);
 
-    const nodeMaterial = new THREE.MeshStandardMaterial({
-      color: 0xB2D6C9,
-      emissive: 0x348C6F,
-      emissiveIntensity: 0.55,
-      roughness: 0.3,
-      metalness: 0.2
+    const systemMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x9BC7B8,
+      metalness: 0.24,
+      roughness: 0.23,
+      clearcoat: 1,
+      transparent: true,
+      opacity: 0.72
     });
-    const nodePositions = [
-      [0, 1.72, 0], [1.52, 0.76, 0.18], [1.42, -0.96, -0.12],
-      [0, -1.72, 0], [-1.5, -0.78, 0.12], [-1.48, 0.82, -0.16]
+    const toolMaterial = new THREE.MeshPhysicalMaterial({
+      color: 0x556A65,
+      metalness: 0.35,
+      roughness: 0.28,
+      clearcoat: 0.7,
+      transparent: true,
+      opacity: 0.85
+    });
+
+    const inputPositions = [
+      new THREE.Vector3(-2.25, 0.78, 0.1),
+      new THREE.Vector3(-2.25, -0.78, -0.1)
     ];
-    nodePositions.forEach((position) => {
-      const node = new THREE.Mesh(new THREE.SphereGeometry(0.045, 12, 12), nodeMaterial);
-      node.position.set(position[0], position[1], position[2]);
-      objectGroup.add(node);
-      const points = [new THREE.Vector3(0, 0, 0), node.position.clone()];
-      const connector = new THREE.Line(
-        new THREE.BufferGeometry().setFromPoints(points),
-        new THREE.LineBasicMaterial({ color: 0x9BC7B8, transparent: true, opacity: 0.34 })
+    const outputPositions = [
+      new THREE.Vector3(2.25, 0.78, -0.1),
+      new THREE.Vector3(2.25, -0.78, 0.1)
+    ];
+
+    function addNode(position, material, size, shape) {
+      const geometry = shape === 'box'
+        ? new THREE.BoxGeometry(size, size, size)
+        : new THREE.OctahedronGeometry(size * 0.68, 1);
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.copy(position);
+      mesh.rotation.set(0.22, 0.38, 0.12);
+      flow.add(mesh);
+      const edges = new THREE.LineSegments(
+        new THREE.EdgesGeometry(geometry),
+        new THREE.LineBasicMaterial({ color: 0x348C6F, transparent: true, opacity: 0.52 })
       );
-      objectGroup.add(connector);
+      edges.position.copy(position);
+      edges.rotation.copy(mesh.rotation);
+      flow.add(edges);
+    }
+
+    inputPositions.forEach((position) => addNode(position, systemMaterial, 0.42, 'box'));
+    outputPositions.forEach((position) => addNode(position, toolMaterial, 0.42, 'octa'));
+
+    function makeCurve(start, end, height) {
+      return new THREE.CatmullRomCurve3([
+        start,
+        new THREE.Vector3(start.x * 0.48, height, 0.15),
+        new THREE.Vector3(end.x * 0.48, height * 0.82, 0.15),
+        end
+      ]);
+    }
+
+    const curves = [
+      makeCurve(inputPositions[0], new THREE.Vector3(-0.3, 0.17, 0.05), 1.2),
+      makeCurve(inputPositions[1], new THREE.Vector3(-0.3, -0.17, 0.05), -1.2),
+      makeCurve(new THREE.Vector3(0.3, 0.17, 0.05), outputPositions[0], 1.12),
+      makeCurve(new THREE.Vector3(0.3, -0.17, 0.05), outputPositions[1], -1.12)
+    ];
+
+    curves.forEach((curve) => {
+      const tube = new THREE.Mesh(
+        new THREE.TubeGeometry(curve, 56, 0.012, 7, false),
+        new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.52 })
+      );
+      flow.add(tube);
+    });
+
+    const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x348C6F });
+    const particles = curves.map((curve, index) => {
+      const geometry = new THREE.SphereGeometry(0.045, 12, 12);
+      const mesh = new THREE.Mesh(geometry, particleMaterial);
+      flow.add(mesh);
+      return { mesh, curve, offset: index * 0.24 };
     });
 
     const resize = () => {
-      const rect = canvas.getBoundingClientRect();
+      const rect = visual.getBoundingClientRect();
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       camera.aspect = width / height;
       camera.updateProjectionMatrix();
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.35));
       renderer.setSize(width, height, false);
       renderer.render(scene, camera);
     };
 
-    renderer.setClearColor(0x000000, 0);
     resize();
-    visual.classList.add('is-webgl');
+    visual.classList.add('is-live');
 
     let frame = 0;
     let active = false;
-    let pageVisible = !document.hidden;
+    let visible = !document.hidden;
+    let time = 0;
+    const renderStatic = () => renderer.render(scene, camera);
 
-    const draw = (time) => {
-      if (!active || !pageVisible || reducedMotion.matches) {
+    const draw = () => {
+      if (!active || !visible || reducedMotion.matches) {
         frame = 0;
-        renderer.render(scene, camera);
+        renderStatic();
         return;
       }
-      const seconds = time * 0.00018;
-      objectGroup.rotation.y = seconds;
-      objectGroup.rotation.x = Math.sin(seconds * 0.7) * 0.11;
-      ringOne.rotation.z = 0.9 + seconds * 0.23;
-      ringTwo.rotation.x = 0.12 + seconds * 0.17;
+      time += 0.0038;
+      flow.rotation.y = Math.sin(time * 0.6) * 0.075;
+      core.rotation.y = time * 0.16;
+      ring.rotation.z = 0.25 + time * 0.08;
+      particles.forEach(({ mesh, curve, offset }) => {
+        const progress = (time * 0.16 + offset) % 1;
+        mesh.position.copy(curve.getPointAt(progress));
+      });
       renderer.render(scene, camera);
       frame = window.requestAnimationFrame(draw);
     };
 
     const start = () => {
       if (reducedMotion.matches) {
-        renderer.render(scene, camera);
+        renderStatic();
         return;
       }
-      if (!frame && active && pageVisible) frame = window.requestAnimationFrame(draw);
+      if (active && visible && !frame) frame = window.requestAnimationFrame(draw);
     };
     const stop = () => {
       if (frame) window.cancelAnimationFrame(frame);
       frame = 0;
     };
 
-    const sceneObserver = new IntersectionObserver((observations) => {
-      active = Boolean(observations[0]?.isIntersecting);
+    const observer = new IntersectionObserver((entries) => {
+      active = Boolean(entries[0]?.isIntersecting);
       if (active) start();
       else stop();
     }, { threshold: 0.08 });
-    sceneObserver.observe(visual);
-
-    document.addEventListener('visibilitychange', () => {
-      pageVisible = !document.hidden;
-      if (pageVisible) start();
-      else stop();
-    });
+    observer.observe(visual);
 
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(visual);
 
+    document.addEventListener('visibilitychange', () => {
+      visible = !document.hidden;
+      if (visible) start();
+      else stop();
+    });
+
+    reducedMotion.addEventListener?.('change', (event) => {
+      if (event.matches) {
+        stop();
+        renderStatic();
+      } else {
+        start();
+      }
+    });
+
     window.addEventListener('pagehide', () => {
       stop();
-      sceneObserver.disconnect();
+      observer.disconnect();
       resizeObserver.disconnect();
       renderer.dispose();
-      crystalGeometry.dispose();
-      crystal.material.dispose();
-      edgeLines.geometry.dispose();
-      edgeLines.material.dispose();
-      ringOne.geometry.dispose();
-      ringTwo.geometry.dispose();
-      ringMaterial.dispose();
-      ringTwo.material.dispose();
-      nodeMaterial.dispose();
+      coreGeometry.dispose();
+      core.material.dispose();
+      coreEdges.geometry.dispose();
+      coreEdges.material.dispose();
+      ring.geometry.dispose();
+      ring.material.dispose();
+      systemMaterial.dispose();
+      toolMaterial.dispose();
+      particleMaterial.dispose();
+      curves.forEach(() => {});
     }, { once: true });
   }).catch(() => {
+    // The semantic SVG stays available when the module/CDN or WebGL is unavailable.
     canvas.hidden = true;
   });
 })();
