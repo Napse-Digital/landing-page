@@ -215,6 +215,12 @@
       depthWrite: false
     });
     trackMaterial(haloMaterialBase);
+    const hitAreaMaterial = trackMaterial(new THREE.MeshBasicMaterial({
+      color: 0xFFFFFF,
+      transparent: true,
+      opacity: 0,
+      depthWrite: false
+    }));
 
     nodeSpecs.forEach((spec, index) => {
       const material = trackMaterial(nodeTones[spec.tone].clone());
@@ -229,10 +235,17 @@
       halo.position.copy(mesh.position);
       graph.add(halo);
 
+      const hitArea = new THREE.Mesh(nodeGeometry, hitAreaMaterial);
+      hitArea.scale.setScalar(Math.max(spec.size * 2.6, 0.2));
+      hitArea.position.copy(mesh.position);
+      hitArea.userData.graphNodeId = spec.id;
+      graph.add(hitArea);
+
       nodes.push({
         id: spec.id,
         mesh,
         halo,
+        hitArea,
         base: mesh.position.clone(),
         offset: new THREE.Vector3(),
         phase: index * 0.8,
@@ -312,7 +325,7 @@
     };
     const pickNode = (event) => {
       pointerRay(event);
-      const hits = raycaster.intersectObjects(nodes.filter((node) => !node.central).map((node) => node.mesh), false);
+      const hits = raycaster.intersectObjects(nodes.filter((node) => !node.central).map((node) => node.hitArea), false);
       if (!hits.length) {
         const coreHit = raycaster.intersectObject(core, false)[0];
         if (!coreHit) return null;
@@ -416,6 +429,8 @@
       if (!raycaster.ray.intersectPlane(dragPlane, dragIntersection)) return;
       const local = graph.worldToLocal(dragIntersection.clone());
       node.mesh.position.copy(local);
+      node.halo.position.copy(local);
+      node.hitArea.position.copy(local);
       node.offset.copy(local.sub(node.base));
     };
 
@@ -532,6 +547,8 @@
       nodes.forEach((node) => {
         if (node.central || gesture?.mode === 'node' && gesture.node?.id === node.id || node.offset.lengthSq() > 0) return;
         node.mesh.position.y = node.base.y + Math.sin(elapsed * 0.55 + node.phase) * 0.012;
+        node.halo.position.copy(node.mesh.position);
+        node.hitArea.position.copy(node.mesh.position);
       });
       core.rotation.y += delta * 0.12;
       core.rotation.x = Math.sin(elapsed * 0.24) * 0.035;
