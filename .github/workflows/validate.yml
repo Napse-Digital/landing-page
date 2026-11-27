@@ -14,5 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate local assets, anchors, brand tokens and background
+      - name: Validate assets, anchors, brand tokens, motion and 3D fallback
         run: python tools/validate-site.py
+      - name: Check JavaScript syntax
+        run: node --check script.js

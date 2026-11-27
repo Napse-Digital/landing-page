@@ -155,7 +155,7 @@
     });
 
     const resize = () => {
-      const rect = visual.getBoundingClientRect();
+      const rect = canvas.getBoundingClientRect();
       const width = Math.max(1, Math.floor(rect.width));
       const height = Math.max(1, Math.floor(rect.height));
       camera.aspect = width / height;
