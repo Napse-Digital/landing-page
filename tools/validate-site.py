@@ -56,7 +56,7 @@ if "background-v5-desktop.svg" not in css or "background-v5-tablet.svg" not in c
 if "prefers-reduced-motion" not in css:fail("reduced-motion CSS fallback missing")
 if "focus-visible" not in css or "skip-link" not in body:fail("focus/skip navigation missing")
 js=(ROOT/"script.js").read_text(encoding="utf-8")
-if "three@0.187.0/build/three.module.js" in js or ".architecture-core" not in body or ".architecture-orbit" not in body:fail("N-centered architecture orbit missing or WebGL dependency remains")
+if "three@0.187.0/build/three.module.js" in js or 'class="architecture-core"' not in body or 'class="architecture-orbit' not in body:fail("N-centered architecture orbit missing or WebGL dependency remains")
 if "data-reveal" not in body or "IntersectionObserver" not in js:fail("progressive reveal motion missing")
 if "brand-lockup.webp" in body:fail("old cropped logo derivative remains in use")
 print("PASS: Napse homepage v5 structural checks")
