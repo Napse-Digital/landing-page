@@ -1,30 +1,33 @@
-# Visual QA — Proporção da hero, tipografia e interação por cursor
+# Visual QA — FAQ background anchoring and Obsidian-like 3D graph
 
-## Alterações implementadas nesta revisão
-- Reduzida a escala da tipografia principal da hero e limitado o comprimento de linha para restaurar a hierarquia entre título, descrição e ações.
-- Criada escala tipográfica compartilhada para títulos de seção e textos de apoio; reduzidos os tamanhos de títulos da primeira seção, arquitetura e FAQ.
-- Reduzida a imagem do personagem e mantido o ancoramento independente à direita, agora contido na altura útil do grid para não alcançar a linha “Da necessidade à solução em produção”.
-- Mantida a dissolução gradual inferior da imagem, sem blur na silhueta.
-- Removida a sobreposição negativa entre hero e primeira seção; a transição fica a cargo do gradiente inferior existente da hero, evitando dupla faixa escura.
-- Os três princípios continuam lado a lado em larguras maiores e quebram de forma responsiva em telas estreitas.
-- A composição 3D mantém a esfera central e nós esféricos distribuídos pelas órbitas. A orientação e a iluminação acompanham suavemente a posição do cursor dentro do painel, sem exigir clique ou arraste.
-- O diagrama mantém rotação autônoma discreta, suporte às setas do teclado, pausa fora da viewport e respeito a prefers-reduced-motion.
-- Logo mantida intocada conforme orientação.
+## FAQ / background
+- Root cause identified: the global ambient field used `background-size: 100% 100%`, stretching the long SVG to the full page height. Opening a native `<details>` answer increases page height, so the artwork was rescaled.
+- Background art now uses fixed authored heights per viewport asset: desktop 7200px, tablet 7900px, mobile 8500px. The page content can grow without changing the scale/position of the background artwork.
+- FAQ list/items disable scroll anchoring to avoid browser viewport jumps during disclosure changes. Answers still expand naturally in document flow.
 
-## Validação automatizada
-- A validação estrutural, sintaxe JavaScript e build devem ser confirmados no commit desta revisão.
-- Verificar carregamento do módulo Three.js/WebGL e fallback SVG no Preview.
+## 3D graph interactions
+- The graph remains 3D, with a central sphere, peripheral sphere nodes and a network of links.
+- Drag empty canvas with primary mouse button to rotate the graph.
+- Hold Shift while dragging, or use right/middle drag, to pan the graph.
+- Drag a node to reposition it; its connecting edges follow.
+- Mouse wheel zooms in/out; on touch, one finger rotates and two fingers pinch-zoom.
+- Hovering a node highlights that node and its direct connections while dimming unrelated nodes.
+- Clicking a node only selects/highlights it. There is no Markdown navigation or document opening.
+- Keyboard arrow keys rotate; +/- zoom; Shift accelerates rotation.
+- Motion pauses outside the viewport and respects `prefers-reduced-motion`.
+- Logo was not modified.
 
-## Revisão visual manual pendente
-Conferir 1440×900, 1024×768, 768×1024 e 390×844:
-- Proporção título/personagem e área livre entre a cópia e a imagem.
-- Texto “Da necessidade à solução em produção” totalmente legível, sem cruzar a imagem.
-- Hierarquia de H1, H2, texto de apoio, labels e metadados.
-- Transição hero → primeira seção sem emenda ou faixa escura.
-- Três princípios em linha em largura desktop e sem overflow em tablet/mobile.
-- Perspectiva e iluminação respondendo ao cursor somente dentro do painel; sem interação por clique.
-- Esferas e órbitas visíveis com movimento sutil, sem competir com o conteúdo.
-- Fallback quando WebGL/CDN indisponível e estado com movimento reduzido.
-- Console, rede, menu, FAQ, foco de teclado e links.
+## Validation
+- Run GitHub Actions structural validation and JS syntax for this commit.
+- Confirm Vercel preview serves latest HTML, CSS and JS.
+- Manual visual interaction test remains required for mouse, touch, wheel, node dragging, selection and FAQ expansion/collapse.
 
-A logo permanece intocada. A branch `main` e a produção não foram alteradas nesta revisão.
+## Responsive/manual QA
+Check 1440×900, 1024×768, 768×1024 and 390×844.
+- FAQ open/close does not stretch or relocate the global background pattern.
+- Scroll position remains stable when opening answers.
+- Graph rotation, pan, zoom, node drag and hover relationships work inside the panel only.
+- Clicking a graph node has no document/navigation side effect.
+- Browser console has no WebGL, pointer, or resize errors.
+
+No merge or production deployment in this revision.
