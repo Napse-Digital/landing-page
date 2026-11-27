@@ -33,10 +33,12 @@ def main() -> None:
     with Image.open(destination) as check:
         if check.mode != "RGBA":
             raise RuntimeError("The character cut-out did not preserve its alpha channel")
-        if check.getchannel("A").getextrema()[0] != 0:
+        alpha_range = check.getchannel("A").getextrema()
+        if alpha_range[0] != 0:
             raise RuntimeError("The character background was not made transparent")
+
     print(f"Character cut-out saved: {destination} ({destination.stat().st_size} bytes)")
-    print(f"Alpha range: {check.getchannel('A').getextrema()}")
+    print(f"Alpha range: {alpha_range}")
 
 if __name__ == "__main__":
     main()
