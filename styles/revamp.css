@@ -297,8 +297,8 @@ h2 span { color: var(--accent); }
 }
 .reveal.is-visible { opacity: 1; transform: translate3d(0,0,0); }
 @keyframes character-float {
-  from { transform: translate3d(0,0,0); }
-  to { transform: translate3d(0,-8px,0); }
+  from { translate: 0 0; }
+  to { translate: 0 -8px; }
 }
 @keyframes orbit-drift { to { rotate: 360deg; } }
 @keyframes trace-flow { to { stroke-dashoffset: -32; } }
