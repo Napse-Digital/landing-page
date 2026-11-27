@@ -118,7 +118,7 @@
     const trackGeometry = (geometry) => { geometries.push(geometry); return geometry; };
     const trackMaterial = (material) => { materials.push(material); return material; };
 
-    const coreGeometry = trackGeometry(new THREE.IcosahedronGeometry(0.52, 2));
+    const coreGeometry = trackGeometry(new THREE.IcosahedronGeometry(1, 2));
     const coreMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
       color: 0x305B4F,
       metalness: 0.34,
@@ -208,12 +208,13 @@
         emissiveIntensity: 0.2
       }))
     ];
-    const haloMaterial = trackMaterial(new THREE.MeshBasicMaterial({
+    const haloMaterialBase = new THREE.MeshBasicMaterial({
       color: 0x9BC7B8,
       transparent: true,
       opacity: 0.075,
       depthWrite: false
-    }));
+    });
+    trackMaterial(haloMaterialBase);
 
     nodeSpecs.forEach((spec, index) => {
       const material = trackMaterial(nodeTones[spec.tone].clone());
@@ -223,7 +224,7 @@
       mesh.userData.graphNodeId = spec.id;
       graph.add(mesh);
 
-      const halo = new THREE.Mesh(haloGeometry, haloMaterial);
+      const halo = new THREE.Mesh(haloGeometry, trackMaterial(haloMaterialBase.clone()));
       halo.scale.setScalar(spec.size * 2.2);
       halo.position.copy(mesh.position);
       graph.add(halo);
@@ -401,10 +402,7 @@
       visual.setPointerCapture?.(event.pointerId);
       visual.classList.toggle('is-panning', mode === 'pan');
       visual.classList.toggle('is-node-dragging', mode === 'node');
-      if (mode === 'node') {
-        selectedId = node.id;
-        setHighlight(node.id);
-      }
+      if (mode === 'node') setHighlight(node.id);
       event.preventDefault();
     };
 
@@ -454,7 +452,7 @@
           cameraUp.set(0, 1, 0).applyQuaternion(graphRotation);
           graph.position.addScaledVector(cameraRight, dx * worldPerPixel);
           graph.position.addScaledVector(cameraUp, -dy * worldPerPixel);
-        } else if (gesture.mode === 'node' && gesture.node) {
+        } else if (gesture.mode === 'node' && gesture.node && !gesture.node.central) {
           moveDraggedNode(event, gesture.node);
           updateEdges();
           setHighlight(gesture.node.id);
@@ -479,8 +477,8 @@
     const endPointer = (event) => {
       const activeGesture = gesture;
       if (activeGesture?.mode !== 'pinch' && activeGesture?.pointerId === event.pointerId) {
-        if (activeGesture.mode === 'node' && !activeGesture.moved && activeGesture.node) {
-          selectedId = selectedId === activeGesture.node.id ? null : activeGesture.node.id;
+        if (activeGesture.mode === 'node' && activeGesture.node) {
+          selectedId = activeGesture.moved ? activeGesture.node.id : (selectedId === activeGesture.node.id ? null : activeGesture.node.id);
         } else if (!activeGesture.moved && activeGesture.mode === 'rotate') {
           selectedId = null;
         }
