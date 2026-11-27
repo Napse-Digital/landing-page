@@ -2,7 +2,9 @@ name: Validate landing
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - 'redesign/**'
   pull_request:
     branches: [main]
 
