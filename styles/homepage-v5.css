@@ -35,7 +35,7 @@ img,svg{display:block;max-width:100%}
 button,a{-webkit-tap-highlight-color:transparent}
 ::selection{color:var(--ink);background:var(--pale-mint)}
 .page-shell{position:relative;isolation:isolate;min-height:100vh;overflow:clip;background:var(--deep-forest)}
-.ambient-field{position:absolute;z-index:0;inset:0;pointer-events:none;background-color:var(--deep-forest);background-image:url("../assets/background-v5-desktop.svg");background-repeat:no-repeat;background-position:center top;background-size:100% 100%}
+.ambient-field{position:absolute;z-index:0;inset:0;pointer-events:none;background-color:var(--deep-forest);background-image:url("../assets/background-v5-desktop.svg");background-repeat:no-repeat;background-position:center top;background-size:100% 7200px}
 .ambient-light{position:absolute;z-index:0;top:0;left:0;right:0;height:1100px;pointer-events:none;background:radial-gradient(ellipse at 76% 43%,rgba(109,158,143,.16),transparent 36%),radial-gradient(ellipse at 15% 62%,rgba(48,91,79,.13),transparent 31%);opacity:.72;animation:ambient-breathe 28s ease-in-out infinite alternate}
 .site-header,.page-shell>main,.site-footer{position:relative;z-index:1}
 .container{width:min(calc(100% - 2*var(--gutter)),var(--content-width));margin-inline:auto}
@@ -141,11 +141,15 @@ h2 span{color:var(--mint)}
 .architecture-copy h2 span{color:var(--mint)}
 .architecture-lead{max-width:500px;margin:0;color:rgba(240,244,242,.78);font-size:14px;line-height:1.78}
 .architecture-note{max-width:470px;margin:18px 0 0;padding-left:14px;border-left:2px solid var(--mint);color:rgba(178,214,201,.78);font-size:11px;line-height:1.65}
-.architecture-visual{position:relative;min-height:360px;isolation:isolate;overflow:hidden;border:1px solid rgba(178,214,201,.2);border-radius:18px;background:radial-gradient(ellipse at 50% 48%,rgba(109,158,143,.16),transparent 68%),rgba(8,23,21,.24);touch-action:pan-y;user-select:none;-webkit-user-select:none}
-.architecture-visual.is-live{cursor:default}
+.architecture-visual{position:relative;min-height:360px;isolation:isolate;overflow:hidden;border:1px solid rgba(178,214,201,.2);border-radius:18px;background:radial-gradient(ellipse at 50% 48%,rgba(109,158,143,.16),transparent 68%),rgba(8,23,21,.24);touch-action:none;user-select:none;-webkit-user-select:none;overscroll-behavior:contain}
+.architecture-visual.is-live{cursor:grab}
+.architecture-visual.is-live:active{cursor:grabbing}
+.architecture-visual.is-live.node-hover{cursor:pointer}
 .architecture-visual.is-live::after{content:"";position:absolute;z-index:2;inset:0;pointer-events:none;background:radial-gradient(circle at var(--pointer-x,50%) var(--pointer-y,50%),rgba(178,214,201,.08),transparent 34%);opacity:.7;transition:opacity 260ms ease}
 .architecture-visual.is-live.pointer-idle::after{opacity:0}
 .architecture-visual:focus-visible{outline:3px solid var(--pale-mint);outline-offset:5px}
+.architecture-visual.is-panning{cursor:grabbing}
+.architecture-visual.is-node-dragging{cursor:grabbing}
 .architecture-canvas{position:absolute;z-index:1;inset:0;width:100%;height:100%;display:block;opacity:0;pointer-events:none;transition:opacity 520ms ease}
 .architecture-visual.is-live .architecture-canvas{opacity:1}
 .architecture-fallback{position:absolute;z-index:0;inset:0;width:100%;height:100%;overflow:visible;opacity:1;transition:opacity 520ms ease}
@@ -187,7 +191,8 @@ h2 span{color:var(--mint)}
 .faq-layout{display:grid;grid-template-columns:minmax(260px,.78fr) minmax(0,1.22fr);gap:clamp(52px,8vw,120px);align-items:start}
 .faq-heading{max-width:480px}
 .faq-heading h2{font-size:clamp(31px,3.2vw,44px)}
-.faq-list{border-top:1px solid rgba(178,214,201,.25)}
+.faq-list{border-top:1px solid rgba(178,214,201,.25);overflow-anchor:none}
+.faq-item{overflow-anchor:none}
 .faq-item{border-bottom:1px solid rgba(178,214,201,.2)}
 .faq-item summary{position:relative;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:68px;padding:16px 2px;color:var(--white);font-family:var(--font-display);font-size:15px;font-weight:650;line-height:1.4;cursor:pointer;list-style:none}
 .faq-item summary::-webkit-details-marker{display:none}
@@ -353,8 +358,8 @@ h2 span{color:var(--mint)}
 
 /* Select one continuous field composition per viewport; never reset it per section. */
 @media (max-width:1199px) {
-  .ambient-field { background-image:url("../assets/background-v5-tablet.svg"); }
+  .ambient-field { background-image:url("../assets/background-v5-tablet.svg");background-size:100% 7900px; }
 }
 @media (max-width:640px) {
-  .ambient-field { background-image:url("../assets/background-v5-mobile.svg"); }
+  .ambient-field { background-image:url("../assets/background-v5-mobile.svg");background-size:100% 8500px; }
 }
