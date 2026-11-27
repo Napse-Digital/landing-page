@@ -6,15 +6,16 @@
 - FAQ list/items disable scroll anchoring to avoid browser viewport jumps during disclosure changes. Answers still expand naturally in document flow.
 
 ## 3D graph interactions
-- The graph remains 3D, with a central sphere, peripheral sphere nodes and a network of links.
-- Drag empty canvas with primary mouse button to rotate the graph.
+- The graph remains 3D, with a central sphere, peripheral sphere nodes and a network of links between nodes.
+- Drag empty canvas with the primary mouse button to rotate the graph.
 - Hold Shift while dragging, or use right/middle drag, to pan the graph.
-- Drag a node to reposition it; its connecting edges follow.
+- Drag a peripheral node to reposition it; connected edges follow the node. Invisible hit areas make small spheres easier to grab.
 - Mouse wheel zooms in/out; on touch, one finger rotates and two fingers pinch-zoom.
 - Hovering a node highlights that node and its direct connections while dimming unrelated nodes.
-- Clicking a node only selects/highlights it. There is no Markdown navigation or document opening.
-- Keyboard arrow keys rotate; +/- zoom; Shift accelerates rotation.
+- Clicking a node only toggles selection/highlighting. There is no Markdown navigation or document opening.
+- Arrow keys pan; +/- zoom; Shift accelerates keyboard movement.
 - Motion pauses outside the viewport and respects `prefers-reduced-motion`.
+- Compact control hints are visible within the graph panel.
 - Logo was not modified.
 
 ## Validation
