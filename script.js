@@ -23,8 +23,22 @@
       link.addEventListener('click', () => setMenu(false));
     });
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      if (event.key === 'Escape') {
         setMenu(false, true);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const focusable = [...menu.querySelectorAll('a[href], button:not([disabled])')];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && (document.activeElement === first || !menu.contains(document.activeElement))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     });
     document.addEventListener('pointerdown', (event) => {
@@ -91,11 +105,15 @@
 
     const flow = new THREE.Group();
     scene.add(flow);
+    const disposableGeometries = [];
+    const disposableMaterials = [];
+    const trackGeometry = (geometry) => { disposableGeometries.push(geometry); return geometry; };
+    const trackMaterial = (material) => { disposableMaterials.push(material); return material; };
 
-    const coreGeometry = new THREE.IcosahedronGeometry(0.62, 2);
+    const coreGeometry = trackGeometry(new THREE.IcosahedronGeometry(0.62, 2));
     const core = new THREE.Mesh(
       coreGeometry,
-      new THREE.MeshPhysicalMaterial({
+      trackMaterial(new THREE.MeshPhysicalMaterial({
         color: 0x305B4F,
         metalness: 0.42,
         roughness: 0.2,
@@ -103,39 +121,39 @@
         clearcoatRoughness: 0.1,
         transparent: true,
         opacity: 0.94
-      })
+      }))
     );
     flow.add(core);
 
     const coreEdges = new THREE.LineSegments(
-      new THREE.EdgesGeometry(coreGeometry),
-      new THREE.LineBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.62 })
+      trackGeometry(new THREE.EdgesGeometry(coreGeometry)),
+      trackMaterial(new THREE.LineBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.62 }))
     );
     flow.add(coreEdges);
 
     const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(0.94, 0.012, 8, 100),
-      new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.55 })
+      trackGeometry(new THREE.TorusGeometry(0.94, 0.012, 8, 100)),
+      trackMaterial(new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.55 }))
     );
     ring.rotation.set(0.88, 0.2, 0.25);
     flow.add(ring);
 
-    const systemMaterial = new THREE.MeshPhysicalMaterial({
+    const systemMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
       color: 0x9BC7B8,
       metalness: 0.24,
       roughness: 0.23,
       clearcoat: 1,
       transparent: true,
       opacity: 0.72
-    });
-    const toolMaterial = new THREE.MeshPhysicalMaterial({
+    }));
+    const toolMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
       color: 0x556A65,
       metalness: 0.35,
       roughness: 0.28,
       clearcoat: 0.7,
       transparent: true,
       opacity: 0.85
-    });
+    }));
 
     const inputPositions = [
       new THREE.Vector3(-2.25, 0.78, 0.1),
@@ -147,16 +165,16 @@
     ];
 
     function addNode(position, material, size, shape) {
-      const geometry = shape === 'box'
+      const geometry = trackGeometry(shape === 'box'
         ? new THREE.BoxGeometry(size, size, size)
-        : new THREE.OctahedronGeometry(size * 0.68, 1);
+        : new THREE.OctahedronGeometry(size * 0.68, 1));
       const mesh = new THREE.Mesh(geometry, material);
       mesh.position.copy(position);
       mesh.rotation.set(0.22, 0.38, 0.12);
       flow.add(mesh);
       const edges = new THREE.LineSegments(
-        new THREE.EdgesGeometry(geometry),
-        new THREE.LineBasicMaterial({ color: 0x348C6F, transparent: true, opacity: 0.52 })
+        trackGeometry(new THREE.EdgesGeometry(geometry)),
+        trackMaterial(new THREE.LineBasicMaterial({ color: 0x348C6F, transparent: true, opacity: 0.52 }))
       );
       edges.position.copy(position);
       edges.rotation.copy(mesh.rotation);
@@ -184,15 +202,15 @@
 
     curves.forEach((curve) => {
       const tube = new THREE.Mesh(
-        new THREE.TubeGeometry(curve, 56, 0.012, 7, false),
-        new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.52 })
+        trackGeometry(new THREE.TubeGeometry(curve, 56, 0.012, 7, false)),
+        trackMaterial(new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.52 }))
       );
       flow.add(tube);
     });
 
-    const particleMaterial = new THREE.MeshBasicMaterial({ color: 0x348C6F });
+    const particleMaterial = trackMaterial(new THREE.MeshBasicMaterial({ color: 0x348C6F }));
     const particles = curves.map((curve, index) => {
-      const geometry = new THREE.SphereGeometry(0.045, 12, 12);
+      const geometry = trackGeometry(new THREE.SphereGeometry(0.045, 12, 12));
       const mesh = new THREE.Mesh(geometry, particleMaterial);
       flow.add(mesh);
       return { mesh, curve, offset: index * 0.24 };
@@ -277,16 +295,8 @@
       observer.disconnect();
       resizeObserver.disconnect();
       renderer.dispose();
-      coreGeometry.dispose();
-      core.material.dispose();
-      coreEdges.geometry.dispose();
-      coreEdges.material.dispose();
-      ring.geometry.dispose();
-      ring.material.dispose();
-      systemMaterial.dispose();
-      toolMaterial.dispose();
-      particleMaterial.dispose();
-      curves.forEach(() => {});
+      disposableGeometries.forEach((geometry) => geometry.dispose());
+      disposableMaterials.forEach((material) => material.dispose());
     }, { once: true });
   }).catch(() => {
     // The semantic SVG stays available when the module/CDN or WebGL is unavailable.
