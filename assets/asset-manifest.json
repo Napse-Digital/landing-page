@@ -58,6 +58,11 @@
       "path": "assets/favicon.png",
       "dimensions": "128x128",
       "role": "official brand emblem crop on Deep Forest"
+    },
+    {
+      "path": "assets/hero-character-cutout.webp",
+      "dimensions": "1024x1536",
+      "role": "character cut-out with transparent background; generated from hero-character.webp"
     }
   ]
 }
