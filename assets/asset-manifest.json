@@ -62,7 +62,27 @@
     {
       "path": "assets/hero-character-cutout.webp",
       "dimensions": "1024x1536",
-      "role": "character cut-out with transparent background; generated from hero-character.webp"
+      "role": "alternate character derivative; retained but not used by the current hero"
+    },
+    {
+      "path": "assets/brand-lockup-original.png",
+      "dimensions": "2048x682",
+      "role": "official horizontal logo lockup from Foundations, original RGBA PNG, copied without processing"
+    },
+    {
+      "path": "assets/background-v5-desktop.svg",
+      "dimensions": "1600x7200",
+      "role": "continuous global Deep Forest atmosphere — desktop redesign v1"
+    },
+    {
+      "path": "assets/background-v5-tablet.svg",
+      "dimensions": "768x7900",
+      "role": "continuous global Deep Forest atmosphere — tablet redesign v1"
+    },
+    {
+      "path": "assets/background-v5-mobile.svg",
+      "dimensions": "390x8500",
+      "role": "continuous global Deep Forest atmosphere — mobile redesign v1"
     }
   ]
 }
