@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#081715">
+  <meta name="theme-color" content="#F0F4F2">
   <meta name="description" content="Desenvolvemos e implantamos agentes de IA, automações e integrações para transformar processos empresariais em capacidades operacionais.">
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
@@ -15,10 +15,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="/assets/hero-character.webp" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/hero-character.webp" fetchpriority="high">
+  <link rel="icon" type="image/png" href="./assets/favicon.png">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./styles/sections.css">
   <link rel="stylesheet" href="./styles/responsive.css">
+  <link rel="stylesheet" href="./styles/revamp.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
@@ -30,7 +32,7 @@
   <header class="site-header" id="top">
     <div class="container header-inner">
       <a class="brand" href="#top" aria-label="Napse Digital Solutions — início">
-        <img src="/assets/brand-lockup-cropped.webp" width="1470" height="630" alt="Napse Digital Solutions" decoding="async">
+        <img src="./assets/brand-lockup.webp" width="1470" height="630" alt="Napse Digital Solutions" decoding="async">
       </a>
 
       <nav class="desktop-nav" aria-label="Navegação principal">
@@ -85,7 +87,7 @@
         <div class="hero-visual" aria-label="Personagem visual da Napse">
           <div class="hero-orbit hero-orbit-one" aria-hidden="true"></div>
           <div class="hero-orbit hero-orbit-two" aria-hidden="true"></div>
-          <img class="hero-character" src="/assets/hero-character.webp" alt="Personagem humanoide translúcido com cérebro luminoso verde e jaqueta branca da Napse" width="1024" height="1536" fetchpriority="high" decoding="async">
+          <img class="hero-character" src="./assets/hero-character.webp" alt="Personagem humanoide translúcido com cérebro luminoso verde e jaqueta branca da Napse" width="1024" height="1536" fetchpriority="high" decoding="async">
         </div>
       </div>
       <div class="hero-bottom-line" aria-hidden="true"><span></span><span>Inteligência aplicada à operação</span><span></span></div>
@@ -185,6 +187,7 @@
           <div class="architecture-node node-left"><span class="node-symbol">⌘</span><span>DADOS</span></div>
           <div class="architecture-node node-right"><span class="node-symbol">⌁</span><span>SISTEMAS</span></div>
           <div class="architecture-node node-bottom"><span class="node-symbol">◌</span><span>CANAIS</span></div>
+          <canvas class="architecture-canvas" id="architecture-canvas" aria-hidden="true"></canvas>
           <div class="architecture-core"><span class="core-mark">N</span><strong>AGENTES</strong><small>CONTEXTO + REGRAS</small></div>
           <svg class="architecture-lines" viewBox="0 0 520 480" aria-hidden="true"><path d="M260 70V154M93 240H176M344 240H427M260 326V410"/><path d="M260 154V326" class="line-core"/></svg>
           <span class="diagram-label">ARQUITETURA CONCEITUAL</span>
@@ -285,7 +288,7 @@
 
   <footer class="site-footer">
     <div class="container footer-main">
-      <a class="brand footer-brand" href="#top" aria-label="Napse Digital Solutions — voltar ao início"><img src="/assets/brand-lockup-cropped.webp" alt="Napse Digital Solutions" width="1470" height="630" loading="lazy" decoding="async"></a>
+      <a class="brand footer-brand" href="#top" aria-label="Napse Digital Solutions — voltar ao início"><img src="./assets/brand-lockup.webp" alt="Napse Digital Solutions" width="1470" height="630" loading="lazy" decoding="async"></a>
       <p>Engenharia de IA, agentes inteligentes e soluções para ampliar a capacidade operacional de empresas.</p>
       <div class="footer-nav"><a href="#capacidades">Capacidades</a><a href="#processo">Como trabalhamos</a><a href="#faq">FAQ</a><a href="https://wa.me/5518991657817" target="_blank" rel="noopener noreferrer">Contato ↗</a></div>
     </div>
