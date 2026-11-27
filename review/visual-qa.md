@@ -1,28 +1,26 @@
-# Visual QA — Revisão editorial e visual
+# Visual QA — Ajustes de composição hero e arquitetura
 
-## Escopo implementado nesta revisão
-- O título da seção de contexto foi restaurado para “O trabalho da sua empresa não acontece em uma única ferramenta.”
-- Removida a ressalva redundante abaixo do fluxo de contexto.
-- Restauradas as quatro descrições anteriores das capacidades.
-- Restaurados o parágrafo e a nota conceitual anteriores da seção de arquitetura.
-- O diagrama foi restaurado como orbe central com N, órbitas e nós para processos, dados, sistemas e canais.
-- Removida a cena Three.js; a arquitetura agora usa HTML/SVG sem dependência WebGL.
-- O hero usa o derivado com alfa suavizado `hero-character.webp`, alinhado à direita e à base.
-- O logo oficial PNG permanece sem reconstrução; o tratamento alfa reduz o halo semitransparente.
-- O fundo das ondas desaparece gradualmente sobre o campo global, sem halo independente atrás do personagem.
+## Alterações nesta revisão
+- O personagem da hero usa o arquivo `hero-character-cutout.webp`, sem o derivado com feathering aplicado nas bordas.
+- A imagem está dimensionada para caber integralmente no quadro, alinhada à parede direita da coluna visual, sem transformações que provoquem crop.
+- Removida a camada adicional de halo da hero.
+- Aumentado o espaço vertical antes da legenda “Da necessidade à solução em produção”.
+- Retirada a versão do diagrama com o N central.
+- Restaurada a cena 3D anterior, com geometria central, nós de entrada/saída e conexões, mantendo SVG semântico como fallback.
+- Painel “Arquitetura em contexto” alterado para a superfície verde da paleta Napse.
+- Removido o filtro alfa aplicado à logo atual; a substituição pelo arquivo mestre transparente correto permanece pendente do envio do usuário.
 
-## Automated checks — PASS
-- Commit validado: `cc2da6f113126879af15e5112ed35d931f008f83`.
-- GitHub Actions: validação estrutural e sintaxe JavaScript aprovadas no [run 25](https://github.com/Napse-Digital/landing-page/actions/runs/46058174688).
-- Vercel Preview: deployment `dpl_4e9njvYvuE5rvQpJnW2XMrTAwJDu` em estado `READY` para o mesmo commit.
+## Validação automatizada
+- Validador estrutural atualizado para conferir o asset de personagem, uma cena de arquitetura e seu SVG fallback.
+- Sintaxe JavaScript e teste estrutural precisam ser confirmados via CI no commit desta revisão.
 
-## Browser review — pendente
-A compilação e os testes estruturais não substituem inspeção visual. Revisar no Preview:
+## Revisão visual manual pendente
 - 1440×900, 1024×768, 768×1024 e 390×844.
-- Recorte, escala, encaixe à direita e distância entre personagem e texto.
-- Transparência da logo no header e footer, sem halo opaco perceptível.
-- Continuidade do background nas transições da hero para a seção de contexto.
-- Leitura do orbe/N e posicionamento dos quatro nós, sobretudo em mobile.
-- Menu, FAQ, foco de teclado, reduced motion, console e rede.
+- Personagem completo, sem corte de cabeça/jaqueta, alinhado à borda direita e sem halo desfocado.
+- Respiro da legenda inferior.
+- Painel verde, hierarquia tipográfica e contraste.
+- Comportamento da cena 3D e fallback estático.
+- Logo: substituir após o recebimento do PNG RGBA com transparência real ou SVG oficial.
+- Console, rede, menu, FAQ, teclado e reduced motion.
 
-A revisão visual manual ainda não foi concluída. A branch `main` permanece inalterada; não foi solicitada publicação em produção.
+A branch `main` não foi alterada nesta revisão. Não houve publicação em produção.
