@@ -40,5 +40,15 @@ def main() -> None:
     print(f"Character cut-out saved: {destination} ({destination.stat().st_size} bytes)")
     print(f"Alpha range: {alpha_range}")
 
+    # Diagnostic preview: shows the actual transparency over the website's
+    # Deep Forest field, not over an image viewer's default white background.
+    preview_background = Image.new("RGBA", cutout.size, (8, 23, 21, 255))
+    preview_background.alpha_composite(cutout)
+    preview = preview_background.convert("RGB").resize((512, 768), Image.Resampling.LANCZOS)
+    preview_path = ROOT / "review" / "hero-character-dark-preview.jpg"
+    preview_path.parent.mkdir(parents=True, exist_ok=True)
+    preview.save(preview_path, "JPEG", quality=90, optimize=True)
+    print(f"Dark-field preview saved: {preview_path}")
+
 if __name__ == "__main__":
     main()

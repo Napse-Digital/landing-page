@@ -28,7 +28,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/hero-character-cutout.webp
-          git commit -m "Regenerate transparent character cut-out"
+          git add assets/hero-character-cutout.webp review/hero-character-dark-preview.jpg
+          git commit -m "Regenerate transparent character cut-out and review composite"
           git pull --rebase origin main
           git push
