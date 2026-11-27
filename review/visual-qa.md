@@ -18,10 +18,15 @@
 - Compact control hints are visible within the graph panel.
 - Logo was not modified.
 
-## Validation
-- Run GitHub Actions structural validation and JS syntax for this commit.
-- Confirm Vercel preview serves latest HTML, CSS and JS.
-- Manual visual interaction test remains required for mouse, touch, wheel, node dragging, selection and FAQ expansion/collapse.
+## Automated validation — passed
+- GitHub Actions run 41: structural validation and JavaScript syntax completed successfully.
+- Vercel Preview deployment: READY.
+- Preview HTML, CSS and JavaScript endpoints returned HTTP 200.
+- Served CSS confirmed fixed desktop/tablet/mobile background heights and FAQ scroll-anchor rules.
+- Served JavaScript confirmed graph rotation, pan, zoom, node drag, touch pinch and click-to-select behavior.
+
+## Manual validation — pending
+- A real browser interaction pass is still required for mouse, touch, wheel, node dragging, selection and FAQ expansion/collapse. The successful build and HTTP checks do not substitute for this visual/runtime test.
 
 ## Responsive/manual QA
 Check 1440×900, 1024×768, 768×1024 and 390×844.
