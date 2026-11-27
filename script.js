@@ -511,12 +511,16 @@
 
     const onKeyDown = (event) => {
       const fast = event.shiftKey ? 2.6 : 1;
-      const rotateStep = 0.1 * fast;
-      if (event.key === 'ArrowLeft') graph.rotation.y -= rotateStep;
-      else if (event.key === 'ArrowRight') graph.rotation.y += rotateStep;
-      else if (event.key === 'ArrowUp') graph.rotation.x = clamp(graph.rotation.x - rotateStep, -1.35, 1.35);
-      else if (event.key === 'ArrowDown') graph.rotation.x = clamp(graph.rotation.x + rotateStep, -1.35, 1.35);
-      else if (event.key === '+' || event.key === '=') camera.position.z = clamp(camera.position.z - 0.5 * fast, 4.2, 13);
+      const panStep = 0.11 * fast;
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+        camera.getWorldQuaternion(graphRotation);
+        cameraRight.set(1, 0, 0).applyQuaternion(graphRotation);
+        cameraUp.set(0, 1, 0).applyQuaternion(graphRotation);
+        if (event.key === 'ArrowLeft') graph.position.addScaledVector(cameraRight, panStep);
+        else if (event.key === 'ArrowRight') graph.position.addScaledVector(cameraRight, -panStep);
+        else if (event.key === 'ArrowUp') graph.position.addScaledVector(cameraUp, -panStep);
+        else graph.position.addScaledVector(cameraUp, panStep);
+      } else if (event.key === '+' || event.key === '=') camera.position.z = clamp(camera.position.z - 0.5 * fast, 4.2, 13);
       else if (event.key === '-') camera.position.z = clamp(camera.position.z + 0.5 * fast, 4.2, 13);
       else return;
       event.preventDefault();
