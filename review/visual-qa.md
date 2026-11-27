@@ -1,28 +1,30 @@
-# Visual QA — Hero, transição e diagrama interativo
+# Visual QA — Proporção da hero, tipografia e interação por cursor
 
 ## Alterações implementadas nesta revisão
-- O grid de duas colunas da hero foi preservado; a camada visual do personagem foi retirada do fluxo da coluna e ancorada independentemente à parede direita do grid.
-- A altura da camada visual ultrapassa a base do grid, sem alterar a largura reservada ao texto.
-- Uma máscara de opacidade gradual aplicada somente à base dissolve o término da imagem no Deep Forest; a silhueta principal não recebe blur ou filtro.
-- A transição da hero para a seção de contexto usa uma dissolução mais longa no campo de fundo e uma pequena sobreposição vertical da primeira seção.
-- Os três princípios da hero ficam em uma única linha em desktop; layouts estreitos podem quebrar a linha para evitar overflow.
-- O diagrama mantém o núcleo central, substitui nós quadrados por esferas e adiciona órbitas e conexões.
-- O diagrama aceita arraste por ponteiro/toque horizontal e rotação por setas do teclado; há inércia leve, rotação autônoma discreta e suporte a prefers-reduced-motion.
-- A logo foi mantida intocada nesta rodada.
+- Reduzida a escala da tipografia principal da hero e limitado o comprimento de linha para restaurar a hierarquia entre título, descrição e ações.
+- Criada escala tipográfica compartilhada para títulos de seção e textos de apoio; reduzidos os tamanhos de títulos da primeira seção, arquitetura e FAQ.
+- Reduzida a imagem do personagem e mantido o ancoramento independente à direita, agora contido na altura útil do grid para não alcançar a linha “Da necessidade à solução em produção”.
+- Mantida a dissolução gradual inferior da imagem, sem blur na silhueta.
+- Removida a sobreposição negativa entre hero e primeira seção; a transição fica a cargo do gradiente inferior existente da hero, evitando dupla faixa escura.
+- Os três princípios continuam lado a lado em larguras maiores e quebram de forma responsiva em telas estreitas.
+- A composição 3D mantém a esfera central e nós esféricos distribuídos pelas órbitas. A orientação e a iluminação acompanham suavemente a posição do cursor dentro do painel, sem exigir clique ou arraste.
+- O diagrama mantém rotação autônoma discreta, suporte às setas do teclado, pausa fora da viewport e respeito a prefers-reduced-motion.
+- Logo mantida intocada conforme orientação.
 
 ## Validação automatizada
-- A validação estrutural e sintática precisa ser confirmada pelo CI no commit desta revisão.
-- A disponibilidade de WebGL/CDN e o fallback SVG precisam ser inspecionados no Preview.
+- A validação estrutural, sintaxe JavaScript e build devem ser confirmados no commit desta revisão.
+- Verificar carregamento do módulo Three.js/WebGL e fallback SVG no Preview.
 
 ## Revisão visual manual pendente
-Validar 1440×900, 1024×768, 768×1024 e 390×844:
-- Personagem alinhado à parede direita, sem corte horizontal visível na base.
-- Dissolução da base sem apagar detalhes relevantes da jaqueta.
-- Texto e imagem sem sobreposição indevida.
-- Transição hero → contexto sem linha de corte ou faixa de cor.
-- Três princípios em linha onde houver largura útil; sem overflow em tablet/mobile.
-- Esferas, órbitas, conexões e controle por arraste/setas no painel de arquitetura.
-- Comportamento com WebGL indisponível, CDN indisponível e movimento reduzido.
+Conferir 1440×900, 1024×768, 768×1024 e 390×844:
+- Proporção título/personagem e área livre entre a cópia e a imagem.
+- Texto “Da necessidade à solução em produção” totalmente legível, sem cruzar a imagem.
+- Hierarquia de H1, H2, texto de apoio, labels e metadados.
+- Transição hero → primeira seção sem emenda ou faixa escura.
+- Três princípios em linha em largura desktop e sem overflow em tablet/mobile.
+- Perspectiva e iluminação respondendo ao cursor somente dentro do painel; sem interação por clique.
+- Esferas e órbitas visíveis com movimento sutil, sem competir com o conteúdo.
+- Fallback quando WebGL/CDN indisponível e estado com movimento reduzido.
 - Console, rede, menu, FAQ, foco de teclado e links.
 
-A logo permanece como estava. A branch `main` não foi alterada nesta revisão; não houve merge ou publicação em produção.
+A logo permanece intocada. A branch `main` e a produção não foram alteradas nesta revisão.
