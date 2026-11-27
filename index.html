@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F0F4F2">
+  <meta name="theme-color" content="#081715">
   <meta name="description" content="Desenvolvemos e implantamos agentes de IA, automações e integrações para transformar processos empresariais em capacidades operacionais.">
   <meta name="robots" content="index,follow">
   <meta property="og:type" content="website">
@@ -15,12 +15,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet">
-  <link rel="preload" as="image" href="./assets/hero-character.webp" fetchpriority="high">
-  <link rel="icon" type="image/png" href="./assets/favicon.png">
+  <link rel="preload" as="image" href="./assets/hero-character-cutout.webp" fetchpriority="high">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./styles/sections.css">
   <link rel="stylesheet" href="./styles/responsive.css">
-  <link rel="stylesheet" href="./styles/revamp.css">
+  <link rel="stylesheet" href="./styles/green-refinement.css">
 </head>
 <body>
   <a class="skip-link" href="#main">Pular para o conteúdo</a>
@@ -36,9 +35,9 @@
       </a>
 
       <nav class="desktop-nav" aria-label="Navegação principal">
-        <a href="#capacidades">Capacidades</a>
-        <a href="#processo">Como trabalhamos</a>
-        <a href="#engenharia">Engenharia</a>
+        <a href="#capacidades">Soluções</a>
+        <a href="#processo">Como funciona</a>
+        <a href="#engenharia">Arquitetura</a>
         <a href="#faq">FAQ</a>
       </nav>
 
@@ -67,20 +66,20 @@
     <section class="hero section" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <div class="eyebrow eyebrow-dark"><span class="eyebrow-dot"></span> Engenharia de IA</div>
-          <h1 id="hero-title">Engenharia de IA para transformar processos em <span>capacidades operacionais.</span></h1>
-          <p class="hero-lead">Desenvolvemos agentes de IA, automações e integrações sob medida para conectar sistemas, dados e processos — da arquitetura à implantação.</p>
+          <div class="eyebrow eyebrow-pill"><span class="eyebrow-dot"></span> AGENTES INTELIGENTES</div>
+          <h1 id="hero-title">AUTOMATIZE OS SEUS FLUXOS DE TRABALHO COM <span>AGENTES INTELIGENTES</span></h1>
+          <p class="hero-lead">Transformamos processos manuais em operações inteligentes, escaláveis e eficientes com agentes de IA personalizados para o seu negócio.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="https://wa.me/5518991657817" target="_blank" rel="noopener noreferrer">
               Conversar sobre meu projeto
               <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10h11M10 4l6 6-6 6"/></svg>
             </a>
-            <a class="button button-secondary" href="#capacidades">Explorar capacidades</a>
+            <a class="button button-secondary" href="#capacidades">Conheça as soluções</a>
           </div>
-          <div class="hero-notes" aria-label="Abordagem da Napse">
-            <span>Engenharia sob medida</span>
-            <span>Contexto operacional</span>
-            <span>Arquitetura evolutiva</span>
+          <div class="hero-notes" aria-label="Benefícios da engenharia Napse">
+            <span class="hero-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5-3.4 8.2-8 10-4.6-1.8-8-5-8-10V6l8-3Z"/><path d="m8.5 12 2.2 2.2 4.8-5"/></svg>+Eficiência operacional</span>
+            <span class="hero-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m13 2-9 12h7l-1 8 10-13h-7l0-7Z"/></svg>−Erros manuais</span>
+            <span class="hero-note"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v4m0 10v4M3 12h4m10 0h4M5.6 5.6l2.8 2.8m7.2 7.2 2.8 2.8m0-12.8-2.8 2.8m-7.2 7.2-2.8 2.8"/><circle cx="12" cy="12" r="4.2"/></svg>IA integrada aos seus sistemas</span>
           </div>
         </div>
 
@@ -187,29 +186,43 @@
           <div class="architecture-node node-left"><span class="node-symbol">⌘</span><span>DADOS</span></div>
           <div class="architecture-node node-right"><span class="node-symbol">⌁</span><span>SISTEMAS</span></div>
           <div class="architecture-node node-bottom"><span class="node-symbol">◌</span><span>CANAIS</span></div>
-          <canvas class="architecture-canvas" id="architecture-canvas" aria-hidden="true"></canvas>
           <div class="architecture-core"><span class="core-mark">N</span><strong>AGENTES</strong><small>CONTEXTO + REGRAS</small></div>
+          <canvas class="architecture-canvas" id="architecture-canvas" aria-hidden="true"></canvas>
           <svg class="architecture-lines" viewBox="0 0 520 480" aria-hidden="true"><path d="M260 70V154M93 240H176M344 240H427M260 326V410"/><path d="M260 154V326" class="line-core"/></svg>
           <span class="diagram-label">ARQUITETURA CONCEITUAL</span>
         </div>
       </div>
     </section>
 
-    <section class="evolution section" aria-labelledby="evolution-title">
-      <div class="container evolution-layout">
-        <div class="evolution-heading">
-          <div class="section-index"><span>03</span><i></i><span>O acúmulo</span></div>
-          <div class="eyebrow eyebrow-dark">Construído para evoluir</div>
-          <h2 id="evolution-title">Cada projeto pode revelar <span>componentes para o próximo.</span></h2>
-          <p class="section-lead">A engenharia identifica padrões, integrações e componentes que podem ser documentados e reutilizados quando uma necessidade se repete e existe viabilidade técnica.</p>
+    <section class="guardrails section" id="controle" aria-labelledby="guardrails-title">
+      <div class="container">
+        <div class="section-heading section-heading-process guardrails-heading">
+          <div class="section-index"><span>03</span><i></i><span>O controle</span></div>
+          <div>
+            <div class="eyebrow eyebrow-dark">Execução responsável</div>
+            <h2 id="guardrails-title">Autonomia exige <span>contexto, limites e avaliação.</span></h2>
+            <p class="section-lead">Uma solução bem projetada define o que o agente precisa compreender, quais ações pode executar e em quais situações deve interromper o fluxo ou solicitar intervenção.</p>
+          </div>
         </div>
-        <div class="evolution-flow">
-          <div class="evolution-step"><span class="evo-index">A</span><div><small>ORIGEM</small><strong>Projeto específico</strong><p>Uma necessidade real orienta a solução.</p></div></div>
-          <div class="evolution-connector" aria-hidden="true"><span></span></div>
-          <div class="evolution-step"><span class="evo-index">B</span><div><small>APRENDIZADO</small><strong>Padrões documentados</strong><p>Arquiteturas e fluxos ganham consistência.</p></div></div>
-          <div class="evolution-connector" aria-hidden="true"><span></span></div>
-          <div class="evolution-step"><span class="evo-index">C</span><div><small>ATIVO INTERNO</small><strong>Componentes reutilizáveis</strong><p>Partes validadas podem acelerar novos projetos.</p></div></div>
-          <p class="evolution-caveat">Reutilização é um método de engenharia, não uma plataforma ou catálogo comercial já disponível.</p>
+        <div class="guardrail-grid">
+          <article class="guardrail-card">
+            <span class="guardrail-index">01 / CONTEXTO</span>
+            <h3>Informação relevante</h3>
+            <p>Dados, documentos e regras de negócio organizados para orientar cada tarefa — sem depender de contexto genérico ou incompleto.</p>
+            <div class="guardrail-line" aria-hidden="true"></div>
+          </article>
+          <article class="guardrail-card">
+            <span class="guardrail-index">02 / LIMITES</span>
+            <h3>Ações delimitadas</h3>
+            <p>Ferramentas, permissões, condições e caminhos de exceção definidos de acordo com o risco e a responsabilidade de cada processo.</p>
+            <div class="guardrail-line" aria-hidden="true"></div>
+          </article>
+          <article class="guardrail-card">
+            <span class="guardrail-index">03 / AVALIAÇÃO</span>
+            <h3>Critérios verificáveis</h3>
+            <p>Testes e critérios de aceitação para avaliar o comportamento da solução antes da implantação e orientar sua evolução técnica.</p>
+            <div class="guardrail-line" aria-hidden="true"></div>
+          </article>
         </div>
       </div>
     </section>

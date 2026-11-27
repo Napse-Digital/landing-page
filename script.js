@@ -43,7 +43,7 @@
       '.hero-copy', '.hero-visual', '.context-layout', '.signal',
       '.section-heading', '.capability-item', '.section-heading-process',
       '.process-step', '.engineering-copy', '.architecture-visual',
-      '.evolution-heading', '.evolution-step', '.responsibility-heading',
+      '.guardrails-heading', '.guardrail-card', '.responsibility-heading',
       '.responsibility-column', '.faq-heading', '.faq-item', '.final-cta-inner'
     ];
     const revealTargets = [...new Set(revealSelectors.flatMap((selector) => [...document.querySelectorAll(selector)]))];
