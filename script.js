@@ -67,8 +67,7 @@
     });
   }
 
-  // Architecture orbit is rendered with semantic HTML and SVG; no WebGL dependency.
-// One conceptual 3D flow illustration. The SVG remains the fallback.
+  // Interactive orbital graph: small spheres orbit a central core, inspired by Obsidian's graph view.
   const canvas = document.querySelector('#architecture-canvas');
   const visual = document.querySelector('[data-architecture-visual]');
   if (!canvas || !visual || !('WebGLRenderingContext' in window)) return;
@@ -85,6 +84,8 @@
       });
     } catch {
       canvas.hidden = true;
+      visual.removeAttribute('tabindex');
+      visual.classList.remove('is-live');
       return;
     }
 
@@ -92,179 +93,273 @@
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.1 : 1.35));
 
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(33, 1, 0.1, 30);
-    camera.position.set(0, 1.35, 7.3);
+    const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 30);
+    camera.position.set(0, 0.22, 7.4);
     camera.lookAt(0, 0, 0);
 
-    scene.add(new THREE.HemisphereLight(0xFFFFFF, 0x305B4F, 2.0));
-    const key = new THREE.PointLight(0xB2D6C9, 26, 12);
+    scene.add(new THREE.HemisphereLight(0xFFFFFF, 0x305B4F, 1.8));
+    const key = new THREE.PointLight(0xB2D6C9, 24, 12);
     key.position.set(-2.2, 3.4, 4);
     scene.add(key);
-    const fill = new THREE.PointLight(0x348C6F, 18, 10);
+    const fill = new THREE.PointLight(0x348C6F, 17, 10);
     fill.position.set(2.8, -2, 1.4);
     scene.add(fill);
 
-    const flow = new THREE.Group();
-    scene.add(flow);
-    const disposableGeometries = [];
-    const disposableMaterials = [];
-    const trackGeometry = (geometry) => { disposableGeometries.push(geometry); return geometry; };
-    const trackMaterial = (material) => { disposableMaterials.push(material); return material; };
+    const graph = new THREE.Group();
+    scene.add(graph);
 
-    const coreGeometry = trackGeometry(new THREE.IcosahedronGeometry(0.62, 2));
-    const core = new THREE.Mesh(
-      coreGeometry,
-      trackMaterial(new THREE.MeshPhysicalMaterial({
-        color: 0x305B4F,
-        metalness: 0.42,
-        roughness: 0.2,
-        clearcoat: 1,
-        clearcoatRoughness: 0.1,
-        transparent: true,
-        opacity: 0.94
-      }))
-    );
-    flow.add(core);
+    const geometries = [];
+    const materials = [];
+    const trackGeometry = (geometry) => { geometries.push(geometry); return geometry; };
+    const trackMaterial = (material) => { materials.push(material); return material; };
+
+    const coreGeometry = trackGeometry(new THREE.IcosahedronGeometry(0.56, 2));
+    const coreMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
+      color: 0x305B4F,
+      metalness: 0.34,
+      roughness: 0.22,
+      clearcoat: 1,
+      clearcoatRoughness: 0.12
+    }));
+    const core = new THREE.Mesh(coreGeometry, coreMaterial);
+    graph.add(core);
 
     const coreEdges = new THREE.LineSegments(
       trackGeometry(new THREE.EdgesGeometry(coreGeometry)),
-      trackMaterial(new THREE.LineBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.62 }))
+      trackMaterial(new THREE.LineBasicMaterial({ color: 0x9BC7B8, transparent: true, opacity: 0.27 }))
     );
-    flow.add(coreEdges);
+    graph.add(coreEdges);
 
-    const ring = new THREE.Mesh(
-      trackGeometry(new THREE.TorusGeometry(0.94, 0.012, 8, 100)),
-      trackMaterial(new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.55 }))
+    const coreAura = new THREE.Mesh(
+      trackGeometry(new THREE.SphereGeometry(0.76, 24, 24)),
+      trackMaterial(new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.075, depthWrite: false }))
     );
-    ring.rotation.set(0.88, 0.2, 0.25);
-    flow.add(ring);
+    graph.add(coreAura);
 
-    const systemMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
-      color: 0x9BC7B8,
-      metalness: 0.24,
-      roughness: 0.23,
-      clearcoat: 1,
-      transparent: true,
-      opacity: 0.72
-    }));
-    const toolMaterial = trackMaterial(new THREE.MeshPhysicalMaterial({
-      color: 0x556A65,
-      metalness: 0.35,
-      roughness: 0.28,
-      clearcoat: 0.7,
-      transparent: true,
-      opacity: 0.85
-    }));
-
-    const inputPositions = [
-      new THREE.Vector3(-2.25, 0.78, 0.1),
-      new THREE.Vector3(-2.25, -0.78, -0.1)
+    const ringSpecs = [
+      { radius: 1.45, x: 0.9, y: 0.18, z: -0.12 },
+      { radius: 1.86, x: 0.28, y: 0.92, z: 0.22 },
+      { radius: 2.12, x: 1.18, y: -0.38, z: 0.54 }
     ];
-    const outputPositions = [
-      new THREE.Vector3(2.25, 0.78, -0.1),
-      new THREE.Vector3(2.25, -0.78, 0.1)
-    ];
-
-    function addNode(position, material, size, shape) {
-      const geometry = trackGeometry(shape === 'box'
-        ? new THREE.BoxGeometry(size, size, size)
-        : new THREE.OctahedronGeometry(size * 0.68, 1));
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.copy(position);
-      mesh.rotation.set(0.22, 0.38, 0.12);
-      flow.add(mesh);
-      const edges = new THREE.LineSegments(
-        trackGeometry(new THREE.EdgesGeometry(geometry)),
-        trackMaterial(new THREE.LineBasicMaterial({ color: 0x348C6F, transparent: true, opacity: 0.52 }))
+    const rings = ringSpecs.map((spec, index) => {
+      const ring = new THREE.Mesh(
+        trackGeometry(new THREE.TorusGeometry(spec.radius, 0.006, 6, 128)),
+        trackMaterial(new THREE.MeshBasicMaterial({
+          color: index === 1 ? 0x9BC7B8 : 0x6D9E8F,
+          transparent: true,
+          opacity: index === 1 ? 0.31 : 0.2,
+          depthWrite: false
+        }))
       );
-      edges.position.copy(position);
-      edges.rotation.copy(mesh.rotation);
-      flow.add(edges);
-    }
-
-    inputPositions.forEach((position) => addNode(position, systemMaterial, 0.42, 'box'));
-    outputPositions.forEach((position) => addNode(position, toolMaterial, 0.42, 'octa'));
-
-    function makeCurve(start, end, height) {
-      return new THREE.CatmullRomCurve3([
-        start,
-        new THREE.Vector3(start.x * 0.48, height, 0.15),
-        new THREE.Vector3(end.x * 0.48, height * 0.82, 0.15),
-        end
-      ]);
-    }
-
-    const curves = [
-      makeCurve(inputPositions[0], new THREE.Vector3(-0.3, 0.17, 0.05), 1.2),
-      makeCurve(inputPositions[1], new THREE.Vector3(-0.3, -0.17, 0.05), -1.2),
-      makeCurve(new THREE.Vector3(0.3, 0.17, 0.05), outputPositions[0], 1.12),
-      makeCurve(new THREE.Vector3(0.3, -0.17, 0.05), outputPositions[1], -1.12)
-    ];
-
-    curves.forEach((curve) => {
-      const tube = new THREE.Mesh(
-        trackGeometry(new THREE.TubeGeometry(curve, 56, 0.012, 7, false)),
-        trackMaterial(new THREE.MeshBasicMaterial({ color: 0x6D9E8F, transparent: true, opacity: 0.52 }))
-      );
-      flow.add(tube);
+      ring.rotation.set(spec.x, spec.y, spec.z);
+      graph.add(ring);
+      return ring;
     });
 
-    const particleMaterial = trackMaterial(new THREE.MeshBasicMaterial({ color: 0x348C6F }));
-    const particles = curves.map((curve, index) => {
-      const geometry = trackGeometry(new THREE.SphereGeometry(0.045, 12, 12));
-      const mesh = new THREE.Mesh(geometry, particleMaterial);
-      flow.add(mesh);
-      return { mesh, curve, offset: index * 0.24 };
+    const nodeGeometry = trackGeometry(new THREE.SphereGeometry(1, 20, 20));
+    const nodeMaterials = [
+      trackMaterial(new THREE.MeshPhysicalMaterial({
+        color: 0xB2D6C9, metalness: 0.18, roughness: 0.22,
+        clearcoat: 1, emissive: 0x1E443A, emissiveIntensity: 0.32
+      })),
+      trackMaterial(new THREE.MeshPhysicalMaterial({
+        color: 0x6D9E8F, metalness: 0.22, roughness: 0.26,
+        clearcoat: 0.85, emissive: 0x10201C, emissiveIntensity: 0.28
+      }))
+    ];
+    const haloGeometry = trackGeometry(new THREE.SphereGeometry(1, 16, 16));
+    const haloMaterial = trackMaterial(new THREE.MeshBasicMaterial({
+      color: 0x9BC7B8, transparent: true, opacity: 0.09, depthWrite: false
+    }));
+
+    const nodeSpecs = [
+      { radius: 1.43, phase: 0.1, speed: 0.22, tilt: [0.9, 0.18, 0.0], size: 0.105, material: 0 },
+      { radius: 1.68, phase: 1.8, speed: -0.16, tilt: [0.25, 0.95, 0.25], size: 0.13, material: 1 },
+      { radius: 1.9, phase: 3.05, speed: 0.13, tilt: [1.18, -0.32, 0.42], size: 0.095, material: 0 },
+      { radius: 1.56, phase: 4.4, speed: -0.19, tilt: [0.6, -0.62, 0.8], size: 0.12, material: 1 },
+      { radius: 2.08, phase: 5.35, speed: 0.1, tilt: [1.32, 0.42, -0.38], size: 0.1, material: 0 },
+      { radius: 1.8, phase: 2.35, speed: -0.12, tilt: [0.42, 1.22, -0.25], size: 0.115, material: 1 }
+    ];
+
+    const nodes = nodeSpecs.map((spec) => {
+      const sphere = new THREE.Mesh(nodeGeometry, nodeMaterials[spec.material]);
+      sphere.scale.setScalar(spec.size);
+      graph.add(sphere);
+
+      const halo = new THREE.Mesh(haloGeometry, haloMaterial);
+      halo.scale.setScalar(spec.size * 2.3);
+      graph.add(halo);
+
+      const linkPositions = new Float32Array(6);
+      const linkGeometry = trackGeometry(new THREE.BufferGeometry());
+      linkGeometry.setAttribute('position', new THREE.BufferAttribute(linkPositions, 3));
+      const link = new THREE.Line(
+        linkGeometry,
+        trackMaterial(new THREE.LineBasicMaterial({
+          color: 0x9BC7B8, transparent: true, opacity: 0.28, depthWrite: false
+        }))
+      );
+      link.frustumCulled = false;
+      graph.add(link);
+
+      return {
+        ...spec,
+        plane: new THREE.Euler(spec.tilt[0], spec.tilt[1], spec.tilt[2]),
+        sphere,
+        halo,
+        link,
+        linkPositions
+      };
     });
 
-    const resize = () => {
-      const rect = visual.getBoundingClientRect();
-      const width = Math.max(1, Math.floor(rect.width));
-      const height = Math.max(1, Math.floor(rect.height));
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height, false);
-      renderer.render(scene, camera);
+    const orbitPosition = (node, time) => {
+      const angle = node.phase + time * node.speed;
+      return new THREE.Vector3(
+        Math.cos(angle) * node.radius,
+        Math.sin(angle) * node.radius,
+        Math.sin(angle * 0.72) * 0.12
+      ).applyEuler(node.plane);
     };
 
-    resize();
-    visual.classList.add('is-live');
+    let width = 1;
+    let height = 1;
+    const resize = () => {
+      const rect = visual.getBoundingClientRect();
+      width = Math.max(1, Math.floor(rect.width));
+      height = Math.max(1, Math.floor(rect.height));
+      camera.aspect = width / height;
+      camera.position.z = width < 520 ? 8.0 : 7.4;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height, false);
+      renderOnce();
+    };
 
     let frame = 0;
     let active = false;
     let visible = !document.hidden;
-    let time = 0;
-    const renderStatic = () => renderer.render(scene, camera);
+    let dragging = false;
+    let pointerId = null;
+    let lastPointer = { x: 0, y: 0 };
+    let targetRotation = { x: 0.08, y: 0 };
+    let inertia = { x: 0, y: 0 };
+    let elapsed = 0;
 
-    const draw = () => {
-      if (!active || !visible || reducedMotion.matches) {
-        frame = 0;
-        renderStatic();
-        return;
-      }
-      time += 0.0038;
-      flow.rotation.y = Math.sin(time * 0.6) * 0.075;
-      core.rotation.y = time * 0.16;
-      ring.rotation.z = 0.25 + time * 0.08;
-      particles.forEach(({ mesh, curve, offset }) => {
-        const progress = (time * 0.16 + offset) % 1;
-        mesh.position.copy(curve.getPointAt(progress));
-      });
-      renderer.render(scene, camera);
-      frame = window.requestAnimationFrame(draw);
+    const renderOnce = () => renderer.render(scene, camera);
+    const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+    const onPointerDown = (event) => {
+      if (event.pointerType === 'mouse' && event.button !== 0) return;
+      dragging = true;
+      pointerId = event.pointerId;
+      lastPointer = { x: event.clientX, y: event.clientY };
+      visual.classList.add('is-dragging');
+      visual.setPointerCapture?.(event.pointerId);
+      stop();
     };
 
+    const onPointerMove = (event) => {
+      if (!dragging || event.pointerId !== pointerId) return;
+      const dx = event.clientX - lastPointer.x;
+      const dy = event.clientY - lastPointer.y;
+      lastPointer = { x: event.clientX, y: event.clientY };
+      targetRotation.y += dx * 0.006;
+      targetRotation.x = clamp(targetRotation.x + dy * 0.004, -0.8, 0.8);
+      inertia.y = dx * 0.0008;
+      inertia.x = dy * 0.00055;
+      graph.rotation.y = targetRotation.y;
+      graph.rotation.x = targetRotation.x;
+      renderOnce();
+    };
+
+    const endPointer = (event) => {
+      if (!dragging || (event && event.pointerId !== pointerId)) return;
+      dragging = false;
+      pointerId = null;
+      visual.classList.remove('is-dragging');
+      if (event && visual.hasPointerCapture?.(event.pointerId)) {
+        visual.releasePointerCapture(event.pointerId);
+      }
+      start();
+    };
+
+    const onKeyDown = (event) => {
+      const step = 0.12;
+      if (event.key === 'ArrowLeft') targetRotation.y -= step;
+      else if (event.key === 'ArrowRight') targetRotation.y += step;
+      else if (event.key === 'ArrowUp') targetRotation.x = clamp(targetRotation.x - step, -0.8, 0.8);
+      else if (event.key === 'ArrowDown') targetRotation.x = clamp(targetRotation.x + step, -0.8, 0.8);
+      else return;
+      event.preventDefault();
+      graph.rotation.x = targetRotation.x;
+      graph.rotation.y = targetRotation.y;
+      renderOnce();
+    };
+
+    visual.addEventListener('pointerdown', onPointerDown);
+    visual.addEventListener('pointermove', onPointerMove);
+    visual.addEventListener('pointerup', endPointer);
+    visual.addEventListener('pointercancel', endPointer);
+    visual.addEventListener('lostpointercapture', endPointer);
+    visual.addEventListener('keydown', onKeyDown);
+
+    const draw = () => {
+      frame = 0;
+      if (!active || !visible || dragging) return;
+
+      const delta = Math.min(0.04, clock.getDelta());
+      elapsed += delta;
+
+      if (!reducedMotion.matches) {
+        inertia.x *= 0.94;
+        inertia.y *= 0.94;
+        targetRotation.x = clamp(targetRotation.x + inertia.x, -0.8, 0.8);
+        targetRotation.y += inertia.y + delta * 0.065;
+        graph.rotation.x += (targetRotation.x - graph.rotation.x) * 0.09;
+        graph.rotation.y += (targetRotation.y - graph.rotation.y) * 0.09;
+
+        core.rotation.y += delta * 0.18;
+        core.rotation.x = Math.sin(elapsed * 0.28) * 0.06;
+        coreEdges.rotation.copy(core.rotation);
+        rings.forEach((ring, index) => {
+          ring.rotation.z += delta * (index % 2 ? -0.018 : 0.014);
+          ring.rotation.y += delta * (index % 2 ? 0.012 : -0.01);
+        });
+      }
+
+      nodes.forEach((node) => {
+        const point = orbitPosition(node, elapsed);
+        node.sphere.position.copy(point);
+        node.halo.position.copy(point);
+        const positions = node.link.geometry.attributes.position;
+        positions.setXYZ(0, 0, 0, 0);
+        positions.setXYZ(1, point.x, point.y, point.z);
+        positions.needsUpdate = true;
+      });
+
+      renderer.render(scene, camera);
+      if (!reducedMotion.matches) frame = window.requestAnimationFrame(draw);
+    };
+
+    const clock = new THREE.Clock();
     const start = () => {
+      if (!active || !visible || dragging) return;
       if (reducedMotion.matches) {
-        renderStatic();
+        renderOnce();
         return;
       }
-      if (active && visible && !frame) frame = window.requestAnimationFrame(draw);
+      if (!frame) {
+        clock.getDelta();
+        frame = window.requestAnimationFrame(draw);
+      }
     };
     const stop = () => {
       if (frame) window.cancelAnimationFrame(frame);
       frame = 0;
     };
+
+    resize();
+    visual.classList.add('is-live');
+    visual.setAttribute('aria-label', 'Diagrama 3D interativo. Arraste com o mouse ou o dedo para girar; use as setas do teclado quando o diagrama estiver selecionado.');
 
     const observer = new IntersectionObserver((entries) => {
       active = Boolean(entries[0]?.isIntersecting);
@@ -276,31 +371,42 @@
     const resizeObserver = new ResizeObserver(resize);
     resizeObserver.observe(visual);
 
-    document.addEventListener('visibilitychange', () => {
+    const onVisibilityChange = () => {
       visible = !document.hidden;
       if (visible) start();
       else stop();
-    });
+    };
+    document.addEventListener('visibilitychange', onVisibilityChange);
 
-    reducedMotion.addEventListener?.('change', (event) => {
+    const onMotionChange = (event) => {
       if (event.matches) {
         stop();
-        renderStatic();
+        renderOnce();
       } else {
         start();
       }
-    });
+    };
+    reducedMotion.addEventListener?.('change', onMotionChange);
 
     window.addEventListener('pagehide', () => {
       stop();
       observer.disconnect();
       resizeObserver.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      reducedMotion.removeEventListener?.('change', onMotionChange);
+      visual.removeEventListener('pointerdown', onPointerDown);
+      visual.removeEventListener('pointermove', onPointerMove);
+      visual.removeEventListener('pointerup', endPointer);
+      visual.removeEventListener('pointercancel', endPointer);
+      visual.removeEventListener('lostpointercapture', endPointer);
+      visual.removeEventListener('keydown', onKeyDown);
       renderer.dispose();
-      disposableGeometries.forEach((geometry) => geometry.dispose());
-      disposableMaterials.forEach((material) => material.dispose());
+      geometries.forEach((geometry) => geometry.dispose());
+      materials.forEach((material) => material.dispose());
     }, { once: true });
   }).catch(() => {
-    // The semantic SVG stays available when the module/CDN or WebGL is unavailable.
+    // Keep the SVG graph visible if WebGL or the Three.js module is unavailable.
     canvas.hidden = true;
+    visual.removeAttribute('tabindex');
   });
 })();
