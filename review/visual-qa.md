@@ -9,15 +9,15 @@
 - Removida a cena Three.js; a arquitetura agora usa HTML/SVG sem dependência WebGL.
 - O hero usa o derivado com alfa suavizado `hero-character.webp`, alinhado à direita e à base.
 - O logo oficial PNG permanece sem reconstrução; o tratamento alfa reduz o halo semitransparente.
-- O fundo das ondas passa a desaparecer gradualmente sobre o campo global, sem um halo independente atrás do personagem.
+- O fundo das ondas desaparece gradualmente sobre o campo global, sem halo independente atrás do personagem.
 
-## Automated checks
-- O validador verifica oito seções narrativas, um H1, âncoras, assets, paleta oficial, variantes de background, reduced motion, foco, CTA e presença do orbe.
-- O teste JavaScript verifica a sintaxe de `script.js`.
-- O teste estrutural precisa ser confirmado no novo commit via GitHub Actions antes de ser marcado como aprovado.
+## Automated checks — PASS
+- Commit validado: `cc2da6f113126879af15e5112ed35d931f008f83`.
+- GitHub Actions: validação estrutural e sintaxe JavaScript aprovadas no [run 25](https://github.com/Napse-Digital/landing-page/actions/runs/46058174688).
+- Vercel Preview: deployment `dpl_4e9njvYvuE5rvQpJnW2XMrTAwJDu` em estado `READY` para o mesmo commit.
 
-## Browser review
-A revisão de navegador ainda é necessária no Preview atualizado:
+## Browser review — pendente
+A compilação e os testes estruturais não substituem inspeção visual. Revisar no Preview:
 - 1440×900, 1024×768, 768×1024 e 390×844.
 - Recorte, escala, encaixe à direita e distância entre personagem e texto.
 - Transparência da logo no header e footer, sem halo opaco perceptível.
@@ -25,4 +25,4 @@ A revisão de navegador ainda é necessária no Preview atualizado:
 - Leitura do orbe/N e posicionamento dos quatro nós, sobretudo em mobile.
 - Menu, FAQ, foco de teclado, reduced motion, console e rede.
 
-Build concluído na Vercel não equivale a aprovação visual. A branch `main` permanece inalterada; não foi solicitada publicação em produção.
+A revisão visual manual ainda não foi concluída. A branch `main` permanece inalterada; não foi solicitada publicação em produção.
