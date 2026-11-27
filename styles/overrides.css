@@ -1,0 +1,3 @@
+/* Small semantic aliases used by the page markup. */
+.eyebrow-dark { color: var(--pale-mint); }
+.section-heading-wide { align-items: end; }

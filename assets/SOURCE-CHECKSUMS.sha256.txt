@@ -1,0 +1,3 @@
+2eed38c4c2765d6a141837ebbfaa715b2d7202ac9174dc2d85ed974af4c175ae  napse-foundations/assets/image(6).png
+1e7781e689ba6bd0d1ef4ee3a6360da342932ab15f5ada85687d591512bc20a0  napse-foundations/assets/image(7).png
+7fc9058f26c8619b9ebfd2595f3277214bde99879d662cef2d394405826420d7  napse-foundations/assets/Ondas futurísticas em tons de verde.png

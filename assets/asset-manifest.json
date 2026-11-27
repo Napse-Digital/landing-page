@@ -1,0 +1,63 @@
+{
+  "brand": "Napse Digital Solutions",
+  "sourceRepository": "https://github.com/Napse-Digital/napse-foundations",
+  "sourceMasters": [
+    {
+      "path": "assets/image(6).png",
+      "dimensions": "1024x1536",
+      "role": "supplied hero character master"
+    },
+    {
+      "path": "assets/image(7).png",
+      "dimensions": "2048x682",
+      "role": "supplied official horizontal logo lockup"
+    },
+    {
+      "path": "assets/Ondas futurísticas em tons de verde.png",
+      "dimensions": "1672x941",
+      "role": "supplied wave background master"
+    }
+  ],
+  "landingAssets": [
+    {
+      "path": "assets/hero-character.webp",
+      "dimensions": "1024x1536",
+      "role": "full-size hero character, feathered alpha edges"
+    },
+    {
+      "path": "assets/brand-lockup.webp",
+      "dimensions": "1470x630",
+      "role": "official lockup, transparent padding cropped"
+    },
+    {
+      "path": "assets/waves.webp",
+      "dimensions": "1672x941",
+      "role": "original wave art, native aspect ratio"
+    },
+    {
+      "path": "assets/continuous-background-desktop.svg",
+      "dimensions": "1600x7300",
+      "role": "page-wide continuous background field"
+    },
+    {
+      "path": "assets/continuous-background-tablet.svg",
+      "dimensions": "768x7900",
+      "role": "page-wide continuous background field"
+    },
+    {
+      "path": "assets/continuous-background-mobile.svg",
+      "dimensions": "390x8700",
+      "role": "page-wide continuous background field"
+    },
+    {
+      "path": "assets/og-cover.jpg",
+      "dimensions": "1200x630",
+      "role": "social sharing cover; configure absolute URL when domain is confirmed"
+    },
+    {
+      "path": "assets/favicon.png",
+      "dimensions": "128x128",
+      "role": "official brand emblem crop on Deep Forest"
+    }
+  ]
+}
