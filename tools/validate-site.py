@@ -9,7 +9,7 @@ ROOT=Path(__file__).resolve().parents[1]
 HTML=ROOT/"index.html"
 WA="https://wa.me/5518991657817"
 TOKENS={x.upper() for x in ["#081715","#1E443A","#305B4F","#556A65","#6D9E8F","#9BC7B8","#B2D6C9","#348C6F","#F0F4F2","#FFFFFF","#10201C","#53615C","#7C8984","#DCE7E2"]}
-ASSETS=["assets/brand-lockup-original.png","assets/hero-character.webp","assets/waves.webp","assets/background-v5-desktop.svg","assets/background-v5-tablet.svg","assets/background-v5-mobile.svg","assets/favicon.png"]
+ASSETS=["assets/brand-lockup-original.png","assets/hero-character-cutout.webp","assets/waves.webp","assets/background-v5-desktop.svg","assets/background-v5-tablet.svg","assets/background-v5-mobile.svg","assets/favicon.png"]
 class Page(HTMLParser):
  def __init__(self):
   super().__init__();self.ids=set();self.hrefs=[];self.srcs=[];self.wa=[];self.sections=[];self.h1=0;self.lang=None;self.canvases=0
@@ -32,7 +32,7 @@ body=HTML.read_text(encoding="utf-8");p=Page();p.feed(body)
 if p.lang!="pt-BR":fail("HTML language must be pt-BR")
 if p.h1!=1:fail(f"expected exactly one H1, found {p.h1}")
 if len(p.sections)!=8:fail(f"expected eight narrative sections, found {len(p.sections)}")
-if p.canvases!=0:fail(f"expected no WebGL canvas in the restored orbit diagram, found {p.canvases}")
+if p.canvases!=1:fail(f"expected one architecture canvas, found {p.canvases}")
 for asset in ASSETS:
  if not (ROOT/asset).is_file():fail("missing asset: "+asset)
 for value in p.hrefs:
@@ -56,13 +56,14 @@ if "background-v5-desktop.svg" not in css or "background-v5-tablet.svg" not in c
 if "prefers-reduced-motion" not in css:fail("reduced-motion CSS fallback missing")
 if "focus-visible" not in css or "skip-link" not in body:fail("focus/skip navigation missing")
 js=(ROOT/"script.js").read_text(encoding="utf-8")
-if "three@0.187.0/build/three.module.js" in js or 'class="architecture-core"' not in body or 'class="architecture-orbit' not in body:fail("N-centered architecture orbit missing or WebGL dependency remains")
+if "three@0.187.0/build/three.module.js" not in js or "architecture-fallback" not in body or "data-architecture-visual" not in body:fail("previous 3D architecture scene or SVG fallback missing")
+if 'class="core-mark">N</span>' in body:fail("obsolete N-centered architecture mark remains")
 if "data-reveal" not in body or "IntersectionObserver" not in js:fail("progressive reveal motion missing")
 if "brand-lockup.webp" in body:fail("old cropped logo derivative remains in use")
 print("PASS: Napse homepage v5 structural checks")
-print(f" - sections: {len(p.sections)}; H1: {p.h1}; WebGL canvases: {p.canvases}; WhatsApp CTAs: {len(p.wa)}")
+print(f" - sections: {len(p.sections)}; H1: {p.h1}; architecture canvases: {p.canvases}; WhatsApp CTAs: {len(p.wa)}")
 print(" - original logo PNG and transparent character are used")
 print(" - one continuous background, with desktop/tablet/mobile compositions")
-print(" - N-centered orbit diagram in HTML/SVG; no WebGL dependency")
+print(" - previous Three.js flow scene with semantic SVG fallback")
 print(" - copy is grounded in engineering/implantation and documented claims")
 print(" - official palette, reduced-motion, keyboard focus and skip navigation")
