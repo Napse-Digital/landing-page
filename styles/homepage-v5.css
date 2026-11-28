@@ -161,9 +161,8 @@ h2 span{color:var(--mint)}
 .diagram-core{stroke:#B2D6C9;stroke-width:1.2}
 .diagram-core-mark{fill:none;stroke:#B2D6C9;stroke-width:2.2;stroke-linejoin:round}
 .diagram-point{fill:#B2D6C9}
-.diagram-labels{position:absolute;z-index:2;left:0;right:0;bottom:9px;display:flex;justify-content:space-between;gap:12px}
-.diagram-labels span{color:var(--pale-mint);font-size:9px;font-weight:700;letter-spacing:.12em;text-align:center}
-.diagram-caption{position:absolute;z-index:2;top:12px;right:14px;bottom:auto;max-width:calc(100% - 28px);margin:0;color:rgba(178,214,201,.68);font-size:8px;letter-spacing:.025em;text-align:right;pointer-events:none}
+.diagram-labels{position:absolute;z-index:2;left:18px;right:18px;bottom:14px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:center;gap:10px;padding:11px 14px;border:1px solid rgba(178,214,201,.14);border-radius:11px;background:rgba(8,23,21,.56);backdrop-filter:blur(8px)}
+.diagram-labels span{min-width:0;color:var(--pale-mint);font-size:8px;font-weight:650;letter-spacing:.075em;line-height:1.4;text-align:center;text-wrap:balance}
 /* Process — connected engineering timeline, not a grid of mini-cards. */
 .process-heading{margin-bottom:66px}
 .process-timeline{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:24px;margin:0;padding:0;list-style:none}
@@ -311,9 +310,8 @@ h2 span{color:var(--mint)}
   .architecture-copy h2{font-size:30px}
   .architecture-lead{font-size:13px}
   .architecture-visual{min-height:292px;margin-inline:-7px}
-  .diagram-labels{bottom:0;gap:6px}
-  .diagram-labels span{font-size:7px;letter-spacing:.08em}
-  .diagram-caption{top:8px;right:10px;bottom:auto;max-width:calc(100% - 20px);font-size:7px}
+  .diagram-labels{left:10px;right:10px;bottom:10px;gap:5px;padding:9px 8px;border-radius:9px}
+  .diagram-labels span{font-size:6.5px;letter-spacing:.045em;line-height:1.35}
   .process-heading{margin-bottom:40px}
   .process-timeline{grid-template-columns:1fr;gap:22px;padding-left:2px}
   .process-step{display:grid;grid-template-columns:34px 1fr;gap:4px 12px;padding:0 0 0 0;border:0}
