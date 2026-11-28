@@ -1,39 +1,29 @@
-# Visual QA — FAQ background anchoring and Obsidian-like 3D graph
+# Visual QA — FAQ background, interactive graph and diagram typography
 
 ## FAQ / background
-- Root cause identified: the global ambient field used `background-size: 100% 100%`, stretching the long SVG to the full page height. Opening a native `<details>` answer increases page height, so the artwork was rescaled.
-- Background art now uses fixed authored heights per viewport asset: desktop 7200px, tablet 7900px, mobile 8500px. The page content can grow without changing the scale/position of the background artwork.
-- FAQ list/items disable scroll anchoring to avoid browser viewport jumps during disclosure changes. Answers still expand naturally in document flow.
+- Global background art has fixed authored heights for desktop (7200px), tablet (7900px) and mobile (8500px); expanding native FAQ details does not rescale the artwork.
+- FAQ list/items disable scroll anchoring to avoid viewport jumps. Answers expand naturally in document flow.
 
-## 3D graph interactions
-- The graph remains 3D, with a central sphere, peripheral sphere nodes and a network of links between nodes.
-- Drag empty canvas with the primary mouse button to rotate the graph.
-- Hold Shift while dragging, or use right/middle drag, to pan the graph.
-- Drag a peripheral node to reposition it; connected edges follow the node. Invisible hit areas make small spheres easier to grab.
-- Mouse wheel zooms in/out; on touch, one finger rotates and two fingers pinch-zoom.
-- Hovering a node highlights that node and its direct connections while dimming unrelated nodes.
-- Clicking a node only toggles selection/highlighting. There is no Markdown navigation or document opening.
-- Arrow keys pan; +/- zoom; Shift accelerates keyboard movement.
-- Motion pauses outside the viewport and respects `prefers-reduced-motion`.
-- Compact control hints are visible within the graph panel.
-- Logo was not modified.
+## 3D architecture graphic
+- Removed all visible interaction instructions from the diagram. It is presented as a visual representation, not an instruction panel.
+- Accessible label describes only the represented architecture: process and context, agent and orchestration, tools and systems.
+- Retained visual 3D manipulation for users who discover it, without exposing gesture guidance.
+- The three conceptual labels use consistent compact typography, a 3-column grid, centered alignment, and internal padding inside a restrained inset label surface.
+- Padding and font sizing are reduced on mobile so labels remain inside the diagram frame.
+- The click interaction remains selection/highlighting only; no Markdown or document is opened.
+- Logo not modified.
 
-## Automated validation — passed
-- GitHub Actions run 41: structural validation and JavaScript syntax completed successfully.
-- Vercel Preview deployment: READY.
-- Preview HTML, CSS and JavaScript endpoints returned HTTP 200.
-- Served CSS confirmed fixed desktop/tablet/mobile background heights and FAQ scroll-anchor rules.
-- Served JavaScript confirmed graph rotation, pan, zoom, node drag, touch pinch and click-to-select behavior.
-
-## Manual validation — pending
-- A real browser interaction pass is still required for mouse, touch, wheel, node dragging, selection and FAQ expansion/collapse. The successful build and HTTP checks do not substitute for this visual/runtime test.
+## Validation
+- Run GitHub Actions structural validation and JavaScript syntax on this commit.
+- Confirm the Vercel Preview serves the updated HTML, CSS and JS.
+- Manual visual check remains required for label wrapping/alignment at desktop, tablet and mobile.
 
 ## Responsive/manual QA
-Check 1440×900, 1024×768, 768×1024 and 390×844.
-- FAQ open/close does not stretch or relocate the global background pattern.
-- Scroll position remains stable when opening answers.
-- Graph rotation, pan, zoom, node drag and hover relationships work inside the panel only.
-- Clicking a graph node has no document/navigation side effect.
-- Browser console has no WebGL, pointer, or resize errors.
+Check 1440×900, 1024×768, 768×1024 and 390×844:
+- No visible gesture or control instructions in the architecture panel.
+- Three labels remain centered and fully inside the panel, with consistent inner padding.
+- Mobile labels wrap cleanly and do not collide with the SVG/3D scene.
+- FAQ expansion does not stretch the global background.
+- 3D graph remains decorative and can still be manipulated without click-to-document navigation.
 
 No merge or production deployment in this revision.
