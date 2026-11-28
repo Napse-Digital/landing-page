@@ -596,7 +596,7 @@
     visual.addEventListener('keydown', onKeyDown);
 
     visual.classList.add('is-live', 'pointer-idle');
-    visual.setAttribute('aria-label', 'Grafo 3D interativo: arraste o fundo para girar; Shift ou botão direito mais arraste para mover; arraste esferas para reposicioná-las; role para aproximar; passe o cursor sobre uma esfera para destacar suas conexões; clique para selecionar sem abrir documentos.');
+    visual.setAttribute('aria-label', 'Representação visual 3D da arquitetura: processo e contexto, agente e orquestração, ferramentas e sistemas.');
 
     updateEdges();
     resize();
